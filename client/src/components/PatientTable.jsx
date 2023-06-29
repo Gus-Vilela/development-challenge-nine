@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import EditIcon from '@mui/icons-material/Edit';
+import PatientForm from './PatientForm';
 
 export default function PatientTable(props) {
   const [patients, setPatients] = useState([]);
@@ -101,7 +102,12 @@ export default function PatientTable(props) {
                   </IconButton>
                 </TableCell>
                 <TableCell>
-                  <IconButton>
+                  <IconButton
+                    aria-label="edit"
+                    onClick={() => {
+                      props.handeDefaultValues(patient);
+                    }}
+                  >
                     <EditIcon />
                   </IconButton>
                 </TableCell>

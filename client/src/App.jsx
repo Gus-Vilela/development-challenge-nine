@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
 import { Container, Typography } from '@mui/material';
@@ -6,6 +6,18 @@ import PatientForm from './components/PatientForm.jsx';
 import PatientTable from './components/PatientTable';
 
 function App() {
+  const [defaultValues, setDefaultValues] = useState({
+    id: '',
+    name: '',
+    birthDate: '',
+    email: '',
+    address: '',
+  });
+
+  const handeDefaultValues = (data) => {
+    setDefaultValues(data);
+  };
+
   return (
     <Container
       sx={{
@@ -22,8 +34,8 @@ function App() {
       >
         medcloud
       </Typography>
-      <PatientForm />
-      <PatientTable />
+      <PatientForm defaultValues={defaultValues} />
+      <PatientTable handeDefaultValues={handeDefaultValues} />
     </Container>
   );
 }
