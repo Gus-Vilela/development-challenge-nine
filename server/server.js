@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
-const db = require('./models/Database');
 const port = 3000;
+const db = require('./models/Database');
+const patientRoutes = require('./routes/PatientRoutes');
 const cors = require('cors');
 
 app.use(express.json());
 app.use(cors());
+app.use('/patient', patientRoutes);
 
 (async () => {
   try {
