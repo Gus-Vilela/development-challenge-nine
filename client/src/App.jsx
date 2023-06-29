@@ -3,19 +3,9 @@ import './App.css';
 import axios from 'axios';
 import { Container, Typography } from '@mui/material';
 import PatientForm from './components/PatientForm.jsx';
+import PatientTable from './components/PatientTable';
 
 function App() {
-  useEffect(() => {
-    axios
-      .get('http://localhost:3000/Patient')
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   return (
     <Container
       sx={{
@@ -33,6 +23,7 @@ function App() {
         medcloud
       </Typography>
       <PatientForm />
+      <PatientTable />
     </Container>
   );
 }
