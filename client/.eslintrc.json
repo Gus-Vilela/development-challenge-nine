@@ -40,12 +40,6 @@
       "error",
       { "allowShortCircuit": true, "allowTernary": true }
     ],
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": true
-      }
-    ],
     "linebreak-style": "off",
     "implicit-arrow-linebreak": "off",
     "indent": "off",
@@ -58,6 +52,7 @@
     "no-plusplus": "off",
     "no-param-reassign": "off",
     "no-unused-vars": "off",
-    "no-shadow": ["error", { "allow": ["count", "state"] }]
+    "no-shadow": ["error", { "allow": ["count", "state"] }],
+    "import/no-extraneous-dependencies": "off"
   }
 }

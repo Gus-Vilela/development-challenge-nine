@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   TableContainer,
@@ -9,16 +8,18 @@ import {
   TableRow,
   TableCell,
   Paper,
-  Button,
   IconButton,
+  TablePagination,
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function PatientTable(props) {
-  //getPatients and setPatients are used to store the data from the database
   const [patients, setPatients] = useState([]);
-  //useEffect is used to get the data from the database
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  // useEffect is used to get the data from the database
   useEffect(() => {
     axios
       .get('http://localhost:3000/Patient')
@@ -30,6 +31,15 @@ export default function PatientTable(props) {
         console.log(error);
       });
   }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const handleDelete = (id) => {
     axios
@@ -43,7 +53,7 @@ export default function PatientTable(props) {
       });
   };
 
-  //takes Patient.birthDate and returns it in the format DD/MM/YYYY
+  // takes Patient.birthDate and returns it in the format DD/MM/YYYY
   const formatDate = (date) => {
     const dateArray = date.split('-');
     const day = dateArray[2];
@@ -51,6 +61,9 @@ export default function PatientTable(props) {
     const year = dateArray[0];
     return `${day}/${month}/${year}`;
   };
+
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, patients.length - page * rowsPerPage);
 
   return (
     <TableContainer component={Paper}>
@@ -66,34 +79,50 @@ export default function PatientTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {patients.map((patient) => (
-            <TableRow
-              key={patient.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell>{patient.name}</TableCell>
-              <TableCell>{formatDate(patient.birthDate)}</TableCell>
-              <TableCell>{patient.email}</TableCell>
-              <TableCell>{patient.address}</TableCell>
-              <TableCell>
-                <IconButton
-                  aria-label="delete"
-                  onClick={() => {
-                    handleDelete(patient.id);
-                  }}
-                >
-                  <PersonRemoveIcon />
-                </IconButton>
-              </TableCell>
-              <TableCell>
-                <IconButton>
-                  <EditIcon />
-                </IconButton>
-              </TableCell>
+          {patients
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((patient) => (
+              <TableRow
+                key={patient.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>{patient.name}</TableCell>
+                <TableCell>{formatDate(patient.birthDate)}</TableCell>
+                <TableCell>{patient.email}</TableCell>
+                <TableCell>{patient.address}</TableCell>
+                <TableCell>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      handleDelete(patient.id);
+                    }}
+                  >
+                    <PersonRemoveIcon />
+                  </IconButton>
+                </TableCell>
+                <TableCell>
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          {emptyRows > 0 && (
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10]}
+        component="div"
+        count={patients.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </TableContainer>
   );
 }
