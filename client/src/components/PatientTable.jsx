@@ -16,11 +16,26 @@ import {
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import Popup from './Popup';
+import { set } from 'react-hook-form';
+import PatientForm from './PatientForm';
 
 export default function PatientTable(props) {
   const [patients, setPatients] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openPopup, setOpenPopup] = useState(false);
+  const [defaultValues, setDefaultValues] = useState({
+    id: '',
+    name: '',
+    birthDate: '',
+    email: '',
+    address: '',
+  });
+
+  const handeDefaultValues = (data) => {
+    setDefaultValues(data);
+  };
 
   // useEffect is used to get the data from the database
   useEffect(() => {
@@ -89,13 +104,7 @@ export default function PatientTable(props) {
           color="primary"
           startIcon={<AddIcon />}
           onClick={() => {
-            props.handeDefaultValues({
-              id: '',
-              name: '',
-              birthDate: '',
-              email: '',
-              address: '',
-            });
+            setOpenPopup(true);
           }}
         >
           Novo Paciente
@@ -145,7 +154,7 @@ export default function PatientTable(props) {
                     <IconButton
                       aria-label="edit"
                       onClick={() => {
-                        props.handeDefaultValues(patient);
+                        handeDefaultValues(patient);
                       }}
                     >
                       <EditIcon />
@@ -170,6 +179,9 @@ export default function PatientTable(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <PatientForm defaultValues={defaultValues} />
+      </Popup>
     </>
   );
 }

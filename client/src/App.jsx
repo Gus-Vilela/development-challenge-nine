@@ -6,18 +6,7 @@ import PatientForm from './components/PatientForm.jsx';
 import PatientTable from './components/PatientTable';
 
 function App() {
-  const [defaultValues, setDefaultValues] = useState({
-    id: '',
-    name: '',
-    birthDate: '',
-    email: '',
-    address: '',
-  });
-
-  const handeDefaultValues = (data) => {
-    setDefaultValues(data);
-  };
-
+  
   return (
     <Container
       sx={{
@@ -34,8 +23,7 @@ function App() {
       >
         medcloud
       </Typography>
-      <PatientForm defaultValues={defaultValues} />
-      <PatientTable handeDefaultValues={handeDefaultValues} />
+      <PatientTable/>
     </Container>
   );
 }
