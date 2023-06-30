@@ -11,7 +11,7 @@ import {
   IconButton,
   TablePagination,
   Button,
-  Box,
+  Stack,
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import EditIcon from '@mui/icons-material/Edit';
@@ -70,16 +70,23 @@ export default function PatientTable(props) {
 
   return (
     <>
-      <Box
+      <Stack
+        direction="row"
+        justifyContent="flex-end"
+        component={Paper}
         sx={{
-          display: 'flex',
-          justifyContent: 'end',
-          p: 2,
+          borderBottomLeftRadius: 0,
+          borderBottomRightRadius: 0,
+          marginTop: 2,
           width: '100%',
+          p: 2,
+          backgroundColor: '#f5f5f5',
+          boxSizing: 'border-box',
         }}
       >
         <Button
           variant="contained"
+          color="primary"
           startIcon={<AddIcon />}
           onClick={() => {
             props.handeDefaultValues({
@@ -93,8 +100,14 @@ export default function PatientTable(props) {
         >
           Novo Paciente
         </Button>
-      </Box>
-      <TableContainer component={Paper}>
+      </Stack>
+      <TableContainer
+        component={Paper}
+        sx={{
+          borderStartStartRadius: 0,
+          borderStartEndRadius: 0,
+        }}
+      >
         <Table arial-label="Tabela Pacientes">
           <TableHead>
             <TableRow>
