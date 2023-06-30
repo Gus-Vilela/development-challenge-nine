@@ -19,23 +19,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import Popup from './Popup';
 import PatientForm from './PatientForm';
+import SnackbarAlert from './SnackbarAlert';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 export default function PatientTable(props) {
   const [patients, setPatients] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openPopup, setOpenPopup] = useState(false);
-  const [defaultValues, setDefaultValues] = useState({
-    id: '',
-    name: '',
-    birthDate: '',
-    email: '',
-    address: '',
-  });
-
-  const handeDefaultValues = (data) => {
-    setDefaultValues(data);
-  };
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [defaultValues, setDefaultValues] = useState({});
 
   // useEffect is used to get the data from the database
   useEffect(() => {
@@ -57,6 +50,10 @@ export default function PatientTable(props) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handeDefaultValues = (data) => {
+    setDefaultValues(data);
   };
 
   const handleDelete = (id) => {
@@ -100,8 +97,9 @@ export default function PatientTable(props) {
           boxSizing: 'border-box',
         }}
       >
-        <Typography variant="h5" sx={{ flexGrow: 1 }}>
-          Pacientes
+        <PeopleAltIcon sx={{ mr: 1 }} />
+        <Typography variant="h5" sx={{ flexGrow: 1 }} color="tertiary.main">
+          Lista de Pacientes
         </Typography>
         <Button
           variant="contained"
@@ -196,8 +194,16 @@ export default function PatientTable(props) {
           defaultValues={defaultValues}
           setOpenPopup={setOpenPopup}
           setPatients={setPatients}
+          patients={patients}
+          openSnackbar={openSnackbar}
+          setOpenSnackbar={setOpenSnackbar}
         />
       </Popup>
+      <SnackbarAlert
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        defaultValues={defaultValues}
+      />
     </>
   );
 }

@@ -1,13 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, Snackbar, Stack, TextField, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
+import SnackbarAlert from './SnackbarAlert';
 
 export default function PatientForm(props) {
-  const { defaultValues, setOpenPopup, setPatients } = props;
+  const { defaultValues, setOpenPopup, setPatients, patients } = props;
   const { id } = defaultValues;
+  const { openSnackbar, setOpenSnackbar } = props;
 
   const { register, handleSubmit, formState, control, setValue } = useForm({
     defaultValues: {
@@ -30,6 +32,41 @@ export default function PatientForm(props) {
     handleSetValues(defaultValues);
   }, [defaultValues]);
 
+  const edit = (id, data) => {
+    axios
+      .put(`http://localhost:3000/Patient/${id}`, data)
+      .then((response) => {
+        console.log(response);
+        setOpenPopup(false);
+        // change the value of the edited patient in the table
+        setPatients(
+          patients.map((curPatient) => {
+            if (curPatient.id === id) {
+              return response.data;
+            }
+            return curPatient;
+          })
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const add = (data) => {
+    axios
+      .post('http://localhost:3000/Patient', data)
+      .then((response) => {
+        console.log(response);
+        setOpenPopup(false);
+        // add the new patient in the table
+        setPatients([...patients, response.data]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const onSubmit = (data) => {
     if (id) {
       axios
@@ -37,6 +74,7 @@ export default function PatientForm(props) {
         .then((response) => {
           console.log(response);
           setOpenPopup(false);
+          setOpenSnackbar(true);
         })
         .catch((error) => {
           console.log(error);
@@ -47,6 +85,7 @@ export default function PatientForm(props) {
         .then((response) => {
           console.log(response);
           setOpenPopup(false);
+          setOpenSnackbar(true);
         })
         .catch((error) => {
           console.log(error);

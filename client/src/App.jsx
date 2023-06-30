@@ -16,8 +16,8 @@ function App() {
       }}
     >
       <Typography
-        variant="h1"
-        color="primary.main"
+        variant="h2"
+        color="tertiary.main"
         textAlign={{ textAlign: 'center' }}
       >
         medcloud
