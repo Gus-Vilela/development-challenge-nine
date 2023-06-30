@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
 
-export default function PatientForm({ defaultValues }) {
+export default function PatientForm(props) {
+  const { defaultValues, setOpenPopup, setPatients } = props;
   const { id } = defaultValues;
 
   const { register, handleSubmit, formState, control, setValue } = useForm({
@@ -35,6 +36,7 @@ export default function PatientForm({ defaultValues }) {
         .put(`http://localhost:3000/Patient/${id}`, data)
         .then((response) => {
           console.log(response);
+          setOpenPopup(false);
         })
         .catch((error) => {
           console.log(error);
@@ -44,6 +46,7 @@ export default function PatientForm({ defaultValues }) {
         .post('http://localhost:3000/Patient', data)
         .then((response) => {
           console.log(response);
+          setOpenPopup(false);
         })
         .catch((error) => {
           console.log(error);
@@ -75,14 +78,6 @@ export default function PatientForm({ defaultValues }) {
 
   return (
     <>
-      <Typography
-        variant="h2"
-        color="terciary.main"
-        textAlign={{ textAlign: 'center' }}
-        sx={{ marginTop: '2rem' }}
-      >
-        Patient Form
-      </Typography>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Stack spacing={2} width={400}>
           <TextField
@@ -168,14 +163,7 @@ export default function PatientForm({ defaultValues }) {
             error={!!errors.address}
             helperText={errors.address?.message}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="secondary"
-            sx={{
-              bgcolor: 'secondary.main',
-            }}
-          >
+          <Button type="submit" variant="contained">
             Enviar
           </Button>
         </Stack>

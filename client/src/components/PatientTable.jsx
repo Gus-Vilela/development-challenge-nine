@@ -12,12 +12,12 @@ import {
   TablePagination,
   Button,
   Stack,
+  Typography,
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import Popup from './Popup';
-import { set } from 'react-hook-form';
 import PatientForm from './PatientForm';
 
 export default function PatientTable(props) {
@@ -48,7 +48,7 @@ export default function PatientTable(props) {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [openPopup]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -88,6 +88,7 @@ export default function PatientTable(props) {
       <Stack
         direction="row"
         justifyContent="flex-end"
+        alignItems="center"
         component={Paper}
         sx={{
           borderBottomLeftRadius: 0,
@@ -99,11 +100,21 @@ export default function PatientTable(props) {
           boxSizing: 'border-box',
         }}
       >
+        <Typography variant="h5" sx={{ flexGrow: 1 }}>
+          Pacientes
+        </Typography>
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
           onClick={() => {
+            handeDefaultValues({
+              id: '',
+              name: '',
+              birthDate: '',
+              email: '',
+              address: '',
+            });
             setOpenPopup(true);
           }}
         >
@@ -155,6 +166,7 @@ export default function PatientTable(props) {
                       aria-label="edit"
                       onClick={() => {
                         handeDefaultValues(patient);
+                        setOpenPopup(true);
                       }}
                     >
                       <EditIcon />
@@ -180,7 +192,11 @@ export default function PatientTable(props) {
         />
       </TableContainer>
       <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
-        <PatientForm defaultValues={defaultValues} />
+        <PatientForm
+          defaultValues={defaultValues}
+          setOpenPopup={setOpenPopup}
+          setPatients={setPatients}
+        />
       </Popup>
     </>
   );

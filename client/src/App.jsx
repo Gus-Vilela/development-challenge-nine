@@ -6,7 +6,6 @@ import PatientForm from './components/PatientForm.jsx';
 import PatientTable from './components/PatientTable';
 
 function App() {
-  
   return (
     <Container
       sx={{
@@ -23,7 +22,7 @@ function App() {
       >
         medcloud
       </Typography>
-      <PatientTable/>
+      <PatientTable />
     </Container>
   );
 }
