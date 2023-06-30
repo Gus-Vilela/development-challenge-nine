@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { set, useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
-import SnackbarAlert from './SnackbarAlert';
 
 export default function PatientForm(props) {
   const { defaultValues, setOpenPopup, setPatients, patients } = props;
@@ -32,7 +31,7 @@ export default function PatientForm(props) {
     handleSetValues(defaultValues);
   }, [defaultValues]);
 
-  const edit = (id, data) => {
+  const edit = (data) => {
     axios
       .put(`http://localhost:3000/Patient/${id}`, data)
       .then((response) => {

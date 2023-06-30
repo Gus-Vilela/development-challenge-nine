@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 export default function Popup(props) {
   const { openPopup, setOpenPopup, children } = props;
@@ -38,8 +39,15 @@ export default function Popup(props) {
           direction="row"
           justifyContent="start"
           alignItems="center"
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', boxSizing: 'border-box', p: 1 }}
         >
+          <AssignmentIcon
+            sx={{
+              mr: 1,
+              color: 'primary.main',
+              margin: '0 1rem 0 0.5rem',
+            }}
+          />
           <Typography
             variant="h6"
             sx={{
@@ -51,6 +59,11 @@ export default function Popup(props) {
           <IconButton
             aria-label="fechar formulário"
             variant="contained"
+            sx={{
+              '&:hover': {
+                color: '#d32f2f',
+              },
+            }}
             onClick={() => {
               setOpenPopup(false);
             }}

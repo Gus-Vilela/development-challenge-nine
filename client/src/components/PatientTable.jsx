@@ -97,7 +97,13 @@ export default function PatientTable(props) {
           boxSizing: 'border-box',
         }}
       >
-        <PeopleAltIcon sx={{ mr: 1 }} />
+        <PeopleAltIcon
+          sx={{
+            mr: 1,
+            color: 'primary.main',
+            margin: '0 1rem 0 0.5rem',
+          }}
+        />
         <Typography variant="h5" sx={{ flexGrow: 1 }} color="tertiary.main">
           Lista de Pacientes
         </Typography>
@@ -105,6 +111,9 @@ export default function PatientTable(props) {
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
+          sx={{
+            textTransform: 'capitalize',
+          }}
           onClick={() => {
             handeDefaultValues({
               id: '',
@@ -127,14 +136,23 @@ export default function PatientTable(props) {
         }}
       >
         <Table arial-label="Tabela Pacientes">
-          <TableHead>
+          <TableHead
+            sx={{
+              textTransform: 'uppercase',
+              '& .MuiTableCell-head': {
+                fontWeight: '500',
+                color: '#707070',
+                letterSpacing: 1,
+              },
+            }}
+          >
             <TableRow>
-              <TableCell>Nome</TableCell>
-              <TableCell>Data de Nascimento</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Endereço</TableCell>
-              <TableCell>Excluir</TableCell>
-              <TableCell>Editar</TableCell>
+              <TableCell>nome</TableCell>
+              <TableCell>data de nascimento</TableCell>
+              <TableCell>email</TableCell>
+              <TableCell>endereco</TableCell>
+              <TableCell>excluir</TableCell>
+              <TableCell>editar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -152,6 +170,12 @@ export default function PatientTable(props) {
                   <TableCell>
                     <IconButton
                       aria-label="delete"
+                      sx={{
+                        '&:hover': {
+                          backgroundColor: '#e57373',
+                          color: '#fff',
+                        },
+                      }}
                       onClick={() => {
                         handleDelete(patient.id);
                       }}
@@ -187,6 +211,11 @@ export default function PatientTable(props) {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{
+            '& .MuiTablePagination-caption': {
+              color: 'primary.main',
+            },
+          }}
         />
       </TableContainer>
       <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
