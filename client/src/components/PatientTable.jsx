@@ -10,10 +10,12 @@ import {
   Paper,
   IconButton,
   TablePagination,
+  Button,
+  Box,
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import EditIcon from '@mui/icons-material/Edit';
-import PatientForm from './PatientForm';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function PatientTable(props) {
   const [patients, setPatients] = useState([]);
@@ -67,68 +69,94 @@ export default function PatientTable(props) {
     rowsPerPage - Math.min(rowsPerPage, patients.length - page * rowsPerPage);
 
   return (
-    <TableContainer component={Paper}>
-      <Table arial-label="Tabela Pacientes">
-        <TableHead>
-          <TableRow>
-            <TableCell>Nome</TableCell>
-            <TableCell>Data de Nascimento</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Endereço</TableCell>
-            <TableCell>Excluir</TableCell>
-            <TableCell>Editar</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {patients
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((patient) => (
-              <TableRow
-                key={patient.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell>{patient.name}</TableCell>
-                <TableCell>{formatDate(patient.birthDate)}</TableCell>
-                <TableCell>{patient.email}</TableCell>
-                <TableCell>{patient.address}</TableCell>
-                <TableCell>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => {
-                      handleDelete(patient.id);
-                    }}
-                  >
-                    <PersonRemoveIcon />
-                  </IconButton>
-                </TableCell>
-                <TableCell>
-                  <IconButton
-                    aria-label="edit"
-                    onClick={() => {
-                      props.handeDefaultValues(patient);
-                    }}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 72.5 * emptyRows }}>
-              <TableCell colSpan={6} />
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'end',
+          p: 2,
+          width: '100%',
+        }}
+      >
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => {
+            props.handeDefaultValues({
+              id: '',
+              name: '',
+              birthDate: '',
+              email: '',
+              address: '',
+            });
+          }}
+        >
+          Novo Paciente
+        </Button>
+      </Box>
+      <TableContainer component={Paper}>
+        <Table arial-label="Tabela Pacientes">
+          <TableHead>
+            <TableRow>
+              <TableCell>Nome</TableCell>
+              <TableCell>Data de Nascimento</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Endereço</TableCell>
+              <TableCell>Excluir</TableCell>
+              <TableCell>Editar</TableCell>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10]}
-        component="div"
-        count={patients.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {patients
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((patient) => (
+                <TableRow
+                  key={patient.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell>{patient.name}</TableCell>
+                  <TableCell>{formatDate(patient.birthDate)}</TableCell>
+                  <TableCell>{patient.email}</TableCell>
+                  <TableCell>{patient.address}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => {
+                        handleDelete(patient.id);
+                      }}
+                    >
+                      <PersonRemoveIcon />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => {
+                        props.handeDefaultValues(patient);
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 72.5 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10]}
+          component="div"
+          count={patients.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+    </>
   );
 }

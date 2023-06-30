@@ -125,6 +125,7 @@ export default function PatientForm({ defaultValues }) {
             }}
             InputLabelProps={{
               shrink: true,
+              disableFuture: true,
             }}
             error={!!errors.birthDate}
             helperText={errors.birthDate?.message}
