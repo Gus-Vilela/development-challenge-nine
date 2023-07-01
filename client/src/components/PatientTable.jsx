@@ -46,11 +46,11 @@ export default function PatientTable(props) {
         console.log(error);
       });
   }, [openFormPopup]);
-
+  // handleChangePage is used to change the page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
+  // handleChangeRowsPerPage is used to change the number of rows per page
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
