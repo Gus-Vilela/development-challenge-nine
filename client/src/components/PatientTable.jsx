@@ -21,12 +21,17 @@ import Popup from './Popup';
 import PatientForm from './PatientForm';
 import SnackbarAlert from './SnackbarAlert';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import Confirmation from './Confirmation';
+import { set } from 'react-hook-form';
 
 export default function PatientTable(props) {
   const [patients, setPatients] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [openPopup, setOpenPopup] = useState(false);
+  const [openFormPopup, setOpenFormPopup] = useState(false);
+  const [openConfPopup, setOpenConfPopup] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [defaultValues, setDefaultValues] = useState({});
 
@@ -41,7 +46,7 @@ export default function PatientTable(props) {
       .catch((error) => {
         console.log(error);
       });
-  }, [openPopup]);
+  }, [openFormPopup]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -62,6 +67,7 @@ export default function PatientTable(props) {
       .then((response) => {
         console.log(response);
         setPatients(patients.filter((curPatient) => curPatient.id !== id));
+        setOpenSnackbar(true);
       })
       .catch((error) => {
         console.log(error);
@@ -122,7 +128,7 @@ export default function PatientTable(props) {
               email: '',
               address: '',
             });
-            setOpenPopup(true);
+            setOpenFormPopup(true);
           }}
         >
           Novo Paciente
@@ -177,7 +183,8 @@ export default function PatientTable(props) {
                         },
                       }}
                       onClick={() => {
-                        handleDelete(patient.id);
+                        handeDefaultValues(patient);
+                        setOpenConfPopup(true);
                       }}
                     >
                       <PersonRemoveIcon />
@@ -188,7 +195,7 @@ export default function PatientTable(props) {
                       aria-label="edit"
                       onClick={() => {
                         handeDefaultValues(patient);
-                        setOpenPopup(true);
+                        setOpenFormPopup(true);
                       }}
                     >
                       <EditIcon />
@@ -218,14 +225,51 @@ export default function PatientTable(props) {
           }}
         />
       </TableContainer>
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
+      <Popup
+        openPopup={openFormPopup}
+        setOpenPopup={setOpenFormPopup}
+        title="Formulário do Paciente"
+        icon={
+          <AssignmentIcon
+            sx={{
+              mr: 1,
+              color: 'primary.main',
+              margin: '0 1rem 0 0.5rem',
+            }}
+          />
+        }
+      >
         <PatientForm
           defaultValues={defaultValues}
-          setOpenPopup={setOpenPopup}
+          setOpenPopup={setOpenFormPopup}
           setPatients={setPatients}
           patients={patients}
           openSnackbar={openSnackbar}
           setOpenSnackbar={setOpenSnackbar}
+        />
+      </Popup>
+      <Popup
+        openPopup={openConfPopup}
+        setOpenPopup={setOpenConfPopup}
+        title="Confirmação"
+        icon={
+          <PriorityHighIcon
+            sx={{
+              mr: 1,
+              color: 'error.main',
+              margin: '0 1rem 0 0.5rem',
+            }}
+          />
+        }
+      >
+        <Confirmation
+          defaultValues={defaultValues}
+          setOpenPopup={setOpenConfPopup}
+          setPatients={setPatients}
+          patients={patients}
+          openSnackbar={openSnackbar}
+          setOpenSnackbar={setOpenSnackbar}
+          handleDelete={handleDelete}
         />
       </Popup>
       <SnackbarAlert

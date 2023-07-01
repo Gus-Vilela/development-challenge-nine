@@ -25,7 +25,7 @@ export default function SnackbarAlert(props) {
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           {defaultValues.id
-            ? `Paciente editado com sucesso!`
+            ? `Operação realizada com sucesso!`
             : `Paciente adicionado com sucesso!`}
         </Alert>
       </Snackbar>

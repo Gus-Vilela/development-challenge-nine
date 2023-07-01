@@ -8,10 +8,9 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 
 export default function Popup(props) {
-  const { openPopup, setOpenPopup, children } = props;
+  const { openPopup, setOpenPopup, children, title, icon } = props;
   return (
     <Dialog
       open={openPopup}
@@ -41,23 +40,17 @@ export default function Popup(props) {
           alignItems="center"
           sx={{ width: '100%', boxSizing: 'border-box', p: 1 }}
         >
-          <AssignmentIcon
-            sx={{
-              mr: 1,
-              color: 'primary.main',
-              margin: '0 1rem 0 0.5rem',
-            }}
-          />
+          {icon}
           <Typography
             variant="h6"
             sx={{
               flexGrow: 1,
             }}
           >
-            Formuário do Paciente
+            {title}
           </Typography>
           <IconButton
-            aria-label="fechar formulário"
+            aria-label="fechar popup"
             variant="contained"
             sx={{
               '&:hover': {
