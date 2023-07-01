@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react';
 import './App.css';
-import axios from 'axios';
 import { Container, Typography } from '@mui/material';
-import PatientForm from './components/PatientForm.jsx';
 import PatientTable from './components/PatientTable';
 
 function App() {

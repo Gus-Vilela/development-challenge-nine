@@ -1,25 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Button, Snackbar, Stack, TextField, Typography } from '@mui/material';
+import { Button, Snackbar, Stack, TextField } from '@mui/material';
 import React, { useEffect } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
 
 export default function PatientForm(props) {
   const { defaultValues, setOpenPopup, setPatients, patients } = props;
   const { id } = defaultValues;
-  const { openSnackbar, setOpenSnackbar } = props;
-
-  const { register, handleSubmit, formState, control, setValue } = useForm({
-    defaultValues: {
-      name: '',
-      birthDate: '',
-      email: '',
-      address: '',
-    },
-  });
+  const { setOpenSnackbar } = props;
+  const { register, handleSubmit, formState, control, setValue } = useForm({});
   const { errors } = formState;
 
+  // set values to the form
   const handleSetValues = (data) => {
     setValue('name', data.name);
     setValue('birthDate', data.birthDate);
@@ -27,68 +20,43 @@ export default function PatientForm(props) {
     setValue('address', data.address);
   };
 
+  // useEffect is used to set the values to the form
   useEffect(() => {
     handleSetValues(defaultValues);
   }, [defaultValues]);
 
-  const edit = (data) => {
+  const handeEdit = (data) => {
     axios
       .put(`http://localhost:3000/Patient/${id}`, data)
       .then((response) => {
         console.log(response);
         setOpenPopup(false);
-        // change the value of the edited patient in the table
-        setPatients(
-          patients.map((curPatient) => {
-            if (curPatient.id === id) {
-              return response.data;
-            }
-            return curPatient;
-          })
-        );
+        setOpenSnackbar(true);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const add = (data) => {
+  const handleAdd = (data) => {
     axios
       .post('http://localhost:3000/Patient', data)
       .then((response) => {
         console.log(response);
         setOpenPopup(false);
-        // add the new patient in the table
-        setPatients([...patients, response.data]);
+        setOpenSnackbar(true);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  // onSubmit is used to add or edit a patient
   const onSubmit = (data) => {
     if (id) {
-      axios
-        .put(`http://localhost:3000/Patient/${id}`, data)
-        .then((response) => {
-          console.log(response);
-          setOpenPopup(false);
-          setOpenSnackbar(true);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      handeEdit(data);
     } else {
-      axios
-        .post('http://localhost:3000/Patient', data)
-        .then((response) => {
-          console.log(response);
-          setOpenPopup(false);
-          setOpenSnackbar(true);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      handleAdd(data);
     }
   };
 

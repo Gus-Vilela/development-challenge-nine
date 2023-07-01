@@ -24,7 +24,6 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import Confirmation from './Confirmation';
-import { set } from 'react-hook-form';
 
 export default function PatientTable(props) {
   const [patients, setPatients] = useState([]);
@@ -56,7 +55,7 @@ export default function PatientTable(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  // set default values to the form
   const handeDefaultValues = (data) => {
     setDefaultValues(data);
   };
@@ -83,6 +82,7 @@ export default function PatientTable(props) {
     return `${day}/${month}/${year}`;
   };
 
+  // emptyRows is used to fill the table with empty rows
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, patients.length - page * rowsPerPage);
 
@@ -265,10 +265,6 @@ export default function PatientTable(props) {
         <Confirmation
           defaultValues={defaultValues}
           setOpenPopup={setOpenConfPopup}
-          setPatients={setPatients}
-          patients={patients}
-          openSnackbar={openSnackbar}
-          setOpenSnackbar={setOpenSnackbar}
           handleDelete={handleDelete}
         />
       </Popup>

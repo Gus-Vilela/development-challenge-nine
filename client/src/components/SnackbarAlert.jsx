@@ -10,12 +10,14 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 export default function SnackbarAlert(props) {
   const { openSnackbar, setOpenSnackbar, defaultValues } = props;
 
+  // handleClose is used to close the snackbar
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     setOpenSnackbar(false);
   };
+
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar
@@ -24,9 +26,9 @@ export default function SnackbarAlert(props) {
         onClose={handleClose}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          {defaultValues.id
-            ? `Operação realizada com sucesso!`
-            : `Paciente adicionado com sucesso!`}
+          {!defaultValues.id
+            ? 'Paciente adicionado com sucesso!'
+            : 'Operação realizada com sucesso!'}
         </Alert>
       </Snackbar>
     </Stack>
