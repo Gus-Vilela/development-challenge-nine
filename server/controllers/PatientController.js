@@ -11,7 +11,7 @@ module.exports = {
       .catch((error) => {
         // se houver um erro de validação
         if (error instanceof Sequelize.ValidationError) {
-          // enviar uma resposta de erro com a mensagem do erro de validação
+          // enviar uma resposta de erro com a mensagem do erro de validação sem mostrar os detalhes
           res.status(400).json({ error: error.message });
         } else if (error instanceof Sequelize.UniqueConstraintError) {
           // se houver um erro de restrição de unicidade
@@ -24,9 +24,13 @@ module.exports = {
       });
   },
   showAll(req, res) {
-    Patient.findAll().then((patients) => {
-      res.json(patients);
-    });
+    Patient.findAll()
+      .then((patients) => {
+        res.json(patients);
+      })
+      .catch((error) => {
+        res.status(500).json({ error: 'Algo deu errado' });
+      });
   },
   show(req, res) {
     Patient.findByPk(req.params.id).then((patient) => {

@@ -8,8 +8,27 @@ module.exports = (sequelize, DataTypes) => {
   }
   Patient.init(
     {
-      name: DataTypes.STRING,
-      birthDate: DataTypes.DATEONLY,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'Nome não pode ser vazio',
+          },
+        },
+      },
+      birthDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'Data de nascimento não pode ser vazia',
+            isDate: {
+              msg: 'Data de nascimento inválida',
+            },
+          },
+        },
+      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -21,9 +40,23 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: {
             msg: 'Email inválido',
           },
+          async isUnique(email) {
+            const user = await Patient.findOne({ where: { email } });
+            if (user) {
+              throw new Error('Email já cadastrado');
+            }
+          },
         },
       },
-      address: DataTypes.STRING,
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'Endereço não pode ser vazio',
+          },
+        },
+      },
     },
     {
       sequelize,
