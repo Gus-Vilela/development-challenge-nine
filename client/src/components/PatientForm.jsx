@@ -9,7 +9,8 @@ export default function PatientForm(props) {
   const { defaultValues, setOpenPopup, setPatients, patients } = props;
   const { id } = defaultValues;
   const { setOpenSnackbar } = props;
-  const { register, handleSubmit, formState, control, setValue } = useForm({});
+  const { register, handleSubmit, setError, formState, control, setValue } =
+    useForm({});
   const { errors } = formState;
 
   // set values to the form
@@ -47,7 +48,13 @@ export default function PatientForm(props) {
         setOpenSnackbar(true);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
+        if (error.response.data.msg === 'Email já cadastrado') {
+          setError('email', {
+            type: 'manual',
+            message: 'Email já cadastrado',
+          });
+        }
       });
   };
 
@@ -58,28 +65,6 @@ export default function PatientForm(props) {
     } else {
       handleAdd(data);
     }
-  };
-
-  // validate user age to be over 18 considering days, months and years
-  const validateAge = (date) => {
-    const dateArray = date.split('-');
-    const day = dateArray[2];
-    const month = dateArray[1];
-    const year = dateArray[0];
-    const today = new Date();
-    const birthDate = new Date(year, month - 1, day);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDifference = today.getMonth() - birthDate.getMonth();
-    if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-    if (age < 18) {
-      return false;
-    }
-    return true;
   };
 
   return (
@@ -117,8 +102,15 @@ export default function PatientForm(props) {
             {...register('birthDate', {
               required: "Campo 'Data de Nascimento' é obrigatório",
               validate: {
-                isOver18: (date) =>
-                  validateAge(date) || 'O paciente deve ter mais de 18 anos',
+                // verify if the birthDate is in the future
+                isFuture: (value) => {
+                  const today = new Date();
+                  const birthDate = new Date(value);
+                  if (birthDate > today) {
+                    return 'Data de Nascimento não pode ser maior que a data atual';
+                  }
+                  return true;
+                },
               },
             })}
             sx={{

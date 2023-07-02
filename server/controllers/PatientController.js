@@ -1,64 +1,86 @@
 const Sequelize = require('sequelize');
 const { Patient } = require('../models/Database');
-
 module.exports = {
+  // create a new patient and send a success or error response
   store(req, res) {
-    // usar uma promessa para capturar o erro
     Patient.create(req.body)
       .then((patient) => {
         res.json(patient);
       })
       .catch((error) => {
-        // se houver um erro de validação
         if (error instanceof Sequelize.ValidationError) {
-          // enviar uma resposta de erro com a mensagem do erro de validação sem mostrar os detalhes
-          res.status(400).json({ error: error.message });
-        } else if (error instanceof Sequelize.UniqueConstraintError) {
-          // se houver um erro de restrição de unicidade
-          // enviar uma resposta de erro com uma mensagem apropriada
-          res.status(400).json({ error: 'Email já cadastrado' });
+          //  send an error response with the validation error message without showing the details
+          res
+            .status(400)
+            .json({ msg: error.errors[0].message, details: error });
         } else {
-          // enviar uma resposta de erro genérica
-          res.status(500).json({ error: 'Algo deu errado' });
+          // send a generic error response
+          res.status(500).json({ msg: 'Algo deu errado', details: error });
         }
       });
   },
+  // list all patients and send a success or error response
   showAll(req, res) {
     Patient.findAll()
       .then((patients) => {
         res.json(patients);
       })
       .catch((error) => {
-        res.status(500).json({ error: 'Algo deu errado' });
+        // send a generic error response
+        res.status(500).json({ msg: 'Algo deu errado', details: error });
       });
   },
+  // list a specific patient and send a success or error response
   show(req, res) {
-    Patient.findByPk(req.params.id).then((patient) => {
-      res.json(patient);
-    });
+    Patient.findByPk(req.params.id)
+      .then((patient) => {
+        res.json(patient);
+      })
+      .catch((error) => {
+        res.status(500).json({ msg: 'Algo deu errado', details: error });
+      });
   },
+  // update a specific patient and send a success or error response
   update(req, res) {
     const id = req.params.id;
     Patient.update(req.body, {
       where: {
         id: id,
       },
-    }).then(() => {
-      res
-        .status(200)
-        .json({ msg: 'updated successfully a patient with id = ' + id });
-    });
+    })
+      .then(() => {
+        res
+          .status(200)
+          .json({ msg: 'Paciente ' + id + ' atualizado com sucesso' });
+      })
+      .catch((error) => {
+        if (error instanceof Sequelize.ValidationError) {
+          // enviar uma resposta de erro com a mensagem de erro de validação sem mostrar os detalhes
+          res
+            .status(400)
+            .json({ msg: error.errors[0].message, details: error });
+        } else {
+          // send a generic error response
+          res.status(500).json({ msg: 'Algo deu errado', details: error });
+        }
+      });
   },
+  // delete a specific patient and send a success or error response
   destroy(req, res) {
     const id = req.params.id;
     Patient.destroy({
       where: {
         id: id,
       },
-    }).then(() => {
-      res
-        .status(200)
-        .json({ msg: 'deleted successfully a patient with id = ' + id });
-    });
+    })
+      .then(() => {
+        res
+          .status(200)
+          .json({ msg: 'Paciente ' + id + ' removido com sucesso' });
+      })
+      .catch((error) => {
+        res.status(500).json({ msg: 'Algo deu errado', details: error });
+      });
   },
 };
+
