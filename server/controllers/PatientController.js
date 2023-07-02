@@ -54,7 +54,7 @@ module.exports = {
       })
       .catch((error) => {
         if (error instanceof Sequelize.ValidationError) {
-          // enviar uma resposta de erro com a mensagem de erro de validação sem mostrar os detalhes
+          // send an error response with the validation error message without showing the details
           res
             .status(400)
             .json({ msg: error.errors[0].message, details: error });

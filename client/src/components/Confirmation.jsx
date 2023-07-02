@@ -7,12 +7,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function Confirmation(props) {
   const { setOpenPopup, handleDelete, defaultValues } = props;
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
   return (
     <>
       <DialogTitle id="responsive-dialog-title">
-        {'Tem certeza que deseja excluir esse paciente?'}
+        Tem certeza que deseja excluir esse paciente?
       </DialogTitle>
       <DialogContent>
         <DialogContentText>Essa ação não pode ser desfeita.</DialogContentText>

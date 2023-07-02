@@ -17,16 +17,17 @@ import {
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import Popup from './Popup';
-import PatientForm from './PatientForm';
-import SnackbarAlert from './SnackbarAlert';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import Popup from './Popup';
+import PatientForm from './PatientForm';
+import SnackbarAlert from './SnackbarAlert';
 import Confirmation from './Confirmation';
-import { set } from 'react-hook-form';
+import SearchBar from './SearchBar';
 
 export default function PatientTable(props) {
+  const [rawPatients, setRawPatients] = useState([]);
   const [patients, setPatients] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -43,6 +44,7 @@ export default function PatientTable(props) {
       .get('http://localhost:3000/Patient')
       .then((response) => {
         console.log(response.data);
+        setRawPatients(response.data);
         setPatients(response.data);
       })
       .catch((error) => {
@@ -50,7 +52,7 @@ export default function PatientTable(props) {
         setErrorMessage(error.message);
         setOpenSnackbar(true);
       });
-  }, [openFormPopup]);
+  }, [openSnackbar]);
   // handleChangePage is used to change the page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -142,6 +144,7 @@ export default function PatientTable(props) {
           Novo Paciente
         </Button>
       </Stack>
+      <SearchBar rawPatients={rawPatients} setPatients={setPatients} />
       <TableContainer
         component={Paper}
         sx={{
