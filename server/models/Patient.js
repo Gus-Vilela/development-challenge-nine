@@ -23,9 +23,13 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: {
             msg: 'Data de nascimento não pode ser vazia',
-            isDate: {
-              msg: 'Data de nascimento inválida',
-            },
+          },
+          isDate: {
+            msg: 'Data de nascimento inválida',
+          },
+          isBefore: {
+            args: new Date().toISOString().split('T')[0],
+            msg: 'Data de nascimento deve ser anterior a data atual',
           },
         },
       },

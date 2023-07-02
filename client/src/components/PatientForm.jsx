@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { set, useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
+import { isEmail, isAfter } from 'validator';
 
 export default function PatientForm(props) {
   const { defaultValues, setOpenPopup, setSuccessMessage, setErrorMessage } =
@@ -91,10 +92,6 @@ export default function PatientForm(props) {
             variant="filled"
             {...register('name', {
               required: "Campo 'Nome' é obrigatório",
-              maxLength: {
-                value: 50,
-                message: 'Nome deve ter no máximo 50 caracteres',
-              },
               pattern: {
                 value: /^[A-Za-zÀ-ÖØ-öø-ÿ ]+$/,
                 message: 'Nome deve conter apenas letras e espaços',
@@ -118,11 +115,9 @@ export default function PatientForm(props) {
               required: "Campo 'Data de Nascimento' é obrigatório",
               validate: {
                 // verify if the birthDate is in the future
-                isFuture: (value) => {
-                  const today = new Date();
-                  const birthDate = new Date(value);
-                  if (birthDate > today) {
-                    return 'Data de Nascimento não pode ser maior que a data atual';
+                isAfter: (value) => {
+                  if (isAfter(value)) {
+                    return 'Data de Nascimento não pode ser no futuro';
                   }
                   return true;
                 },
@@ -143,9 +138,14 @@ export default function PatientForm(props) {
             type="email"
             {...register('email', {
               required: "Campo 'Email' é obrigatório",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: 'Email inválido',
+              validate: {
+                // verify if the email is valid
+                isEmail: (value) => {
+                  if (!isEmail(value)) {
+                    return 'Email inválido';
+                  }
+                  return true;
+                },
               },
             })}
             sx={{
@@ -162,10 +162,6 @@ export default function PatientForm(props) {
             variant="filled"
             {...register('address', {
               required: "Campo 'Endereço' é obrigatório",
-              maxLength: {
-                value: 50,
-                message: 'Endereço deve ter no máximo 50 caracteres',
-              },
             })}
             sx={{
               bgcolor: 'secondary.main',
