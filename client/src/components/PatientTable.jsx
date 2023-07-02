@@ -24,6 +24,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import Confirmation from './Confirmation';
+import { set } from 'react-hook-form';
 
 export default function PatientTable(props) {
   const [patients, setPatients] = useState([]);
@@ -33,6 +34,8 @@ export default function PatientTable(props) {
   const [openConfPopup, setOpenConfPopup] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [defaultValues, setDefaultValues] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   // useEffect is used to get the data from the database
   useEffect(() => {
@@ -43,7 +46,9 @@ export default function PatientTable(props) {
         setPatients(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.message);
+        setErrorMessage(error.message);
+        setOpenSnackbar(true);
       });
   }, [openFormPopup]);
   // handleChangePage is used to change the page
@@ -67,9 +72,12 @@ export default function PatientTable(props) {
         console.log(response);
         setPatients(patients.filter((curPatient) => curPatient.id !== id));
         setOpenSnackbar(true);
+        setSuccessMessage(response.data.msg);
       })
       .catch((error) => {
         console.log(error);
+        setErrorMessage(error.response.data.msg);
+        setOpenSnackbar(true);
       });
   };
 
@@ -242,10 +250,10 @@ export default function PatientTable(props) {
         <PatientForm
           defaultValues={defaultValues}
           setOpenPopup={setOpenFormPopup}
-          setPatients={setPatients}
-          patients={patients}
           openSnackbar={openSnackbar}
           setOpenSnackbar={setOpenSnackbar}
+          setSuccessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessage}
         />
       </Popup>
       <Popup
@@ -271,7 +279,8 @@ export default function PatientTable(props) {
       <SnackbarAlert
         openSnackbar={openSnackbar}
         setOpenSnackbar={setOpenSnackbar}
-        defaultValues={defaultValues}
+        successMessage={successMessage}
+        errorMessage={errorMessage}
       />
     </>
   );

@@ -1,11 +1,12 @@
 const Sequelize = require('sequelize');
 const { Patient } = require('../models/Database');
+
 module.exports = {
   // create a new patient and send a success or error response
   store(req, res) {
     Patient.create(req.body)
       .then((patient) => {
-        res.json(patient);
+        res.json({ msg: 'Paciente criado com sucesso', patient });
       })
       .catch((error) => {
         if (error instanceof Sequelize.ValidationError) {
@@ -42,16 +43,14 @@ module.exports = {
   },
   // update a specific patient and send a success or error response
   update(req, res) {
-    const id = req.params.id;
+    const { id } = req.params;
     Patient.update(req.body, {
       where: {
         id: id,
       },
     })
       .then(() => {
-        res
-          .status(200)
-          .json({ msg: 'Paciente ' + id + ' atualizado com sucesso' });
+        res.status(200).json({ msg: 'Paciente atualizado com sucesso' });
       })
       .catch((error) => {
         if (error instanceof Sequelize.ValidationError) {
@@ -74,13 +73,10 @@ module.exports = {
       },
     })
       .then(() => {
-        res
-          .status(200)
-          .json({ msg: 'Paciente ' + id + ' removido com sucesso' });
+        res.status(200).json({ msg: 'Paciente removido com sucesso' });
       })
       .catch((error) => {
         res.status(500).json({ msg: 'Algo deu errado', details: error });
       });
   },
 };
-

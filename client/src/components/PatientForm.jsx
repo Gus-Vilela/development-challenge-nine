@@ -1,12 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Button, Snackbar, Stack, TextField } from '@mui/material';
 import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
 
 export default function PatientForm(props) {
-  const { defaultValues, setOpenPopup, setPatients, patients } = props;
+  const { defaultValues, setOpenPopup, setSuccessMessage, setErrorMessage } =
+    props;
   const { id } = defaultValues;
   const { setOpenSnackbar } = props;
   const { register, handleSubmit, setError, formState, control, setValue } =
@@ -30,22 +31,10 @@ export default function PatientForm(props) {
     axios
       .put(`http://localhost:3000/Patient/${id}`, data)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
         setOpenPopup(false);
         setOpenSnackbar(true);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleAdd = (data) => {
-    axios
-      .post('http://localhost:3000/Patient', data)
-      .then((response) => {
-        console.log(response);
-        setOpenPopup(false);
-        setOpenSnackbar(true);
+        setSuccessMessage(response.data.msg);
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -54,6 +43,32 @@ export default function PatientForm(props) {
             type: 'manual',
             message: 'Email já cadastrado',
           });
+        } else {
+          setErrorMessage(error.response.data.msg);
+          setOpenSnackbar(true);
+        }
+      });
+  };
+
+  const handleAdd = (data) => {
+    axios
+      .post('http://localhost:3000/Patient', data)
+      .then((response) => {
+        console.log(response.data);
+        setOpenPopup(false);
+        setOpenSnackbar(true);
+        setSuccessMessage(response.data.msg);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        if (error.response.data.msg === 'Email já cadastrado') {
+          setError('email', {
+            type: 'manual',
+            message: 'Email já cadastrado',
+          });
+        } else {
+          setErrorMessage(error.response.data.msg);
+          setOpenSnackbar(true);
         }
       });
   };
