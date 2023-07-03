@@ -1,2 +1,7 @@
 # package directorie
 node_modules
+# dotenv environment variables file
+.env
+.env.example
+.env.local
+.env.staging

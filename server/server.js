@@ -1,6 +1,7 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const db = require('./models/Database');
 const patientRoutes = require('./routes/PatientRoutes');
 const cors = require('cors');
