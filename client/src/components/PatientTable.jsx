@@ -41,7 +41,7 @@ export default function PatientTable(props) {
   // useEffect is used to get the data from the database
   useEffect(() => {
     axios
-      .get('http://localhost:3000/Patient')
+      .get('http://localhost:3001/Patient')
       .then((response) => {
         console.log(response.data);
         setRawPatients(response.data);
@@ -69,7 +69,7 @@ export default function PatientTable(props) {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:3000/Patient/${id}`)
+      .delete(`http://localhost:3001/Patient/${id}`)
       .then((response) => {
         console.log(response);
         setPatients(patients.filter((curPatient) => curPatient.id !== id));

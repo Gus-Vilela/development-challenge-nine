@@ -30,7 +30,7 @@ export default function PatientForm(props) {
 
   const handeEdit = (data) => {
     axios
-      .put(`http://localhost:3000/Patient/${id}`, data)
+      .put(`http://localhost:3001/Patient/${id}`, data)
       .then((response) => {
         console.log(response.data);
         setOpenPopup(false);
@@ -53,7 +53,7 @@ export default function PatientForm(props) {
 
   const handleAdd = (data) => {
     axios
-      .post('http://localhost:3000/Patient', data)
+      .post('http://localhost:3001/Patient', data)
       .then((response) => {
         console.log(response.data);
         setOpenPopup(false);
