@@ -1,3 +1,53 @@
+# Code Challenge Solution
+
+This repository contains a solution to a code challenge. Follow the instructions below to run the project.
+
+## Prerequisites
+- [Node.js](https://nodejs.org) installed on your machine.
+- [Docker](https://www.docker.com/) installed on your machine.
+
+## Instructions
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Gus-Vilela/development-challenge-nine
+   ```
+
+2. Configure the Node.js API:
+   1. Create a `.env` file in the `server` directory of the project. You can use the provided `.env.sample` file as a reference. The file should look like this:
+
+      ```
+      # node ports
+      NODE_LOCAL_PORT=3001
+      NODE_DOCKER_PORT=3000
+
+      # MySQL ports
+      MYSQL_LOCAL_PORT=3307
+      MYSQL_DOCKER_PORT=3306
+
+      # MySQL credentials
+      DB_USERNAME=root
+      DB_PASSWORD=root
+      DB_NAME=medcloudChallenge
+      DB_HOST=mysqldb
+      DB_DIALECT=mysql
+      ```
+
+   2. Run Docker Compose to set up the required containers:
+      ```bash
+      docker-compose up -d
+      ```
+
+   3. Enter the running container using Docker Exec:
+      ```bash
+      docker exec -it server-app sh
+      ```
+
+   4. Run the database migrations using the Sequelize CLI:
+      ```bash
+      npx sequelize-cli db:migrate
+      ```
+
 # Development challenge
 
 ![logo medcloud-03 white copy](https://user-images.githubusercontent.com/46347123/158176045-de9fefb0-35e2-4515-83ff-c132608aa870.png)
