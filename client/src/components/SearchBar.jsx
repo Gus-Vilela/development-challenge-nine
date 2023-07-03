@@ -30,7 +30,7 @@ export default function SearchBar({ rawPatients, setPatients }) {
           width: '100%',
           boxSizing: 'border-box',
         }}
-        label="Pesquisar Paciente por Nome"
+        label="Pesquisar por Nome..."
         variant="outlined"
         onChange={handleSearchTextChange}
         InputProps={{
