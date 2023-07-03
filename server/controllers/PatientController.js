@@ -44,6 +44,7 @@ module.exports = {
   // update a specific patient and send a success or error response
   update(req, res) {
     const { id } = req.params;
+    req.body.id = Number(id);
     Patient.update(req.body, {
       where: {
         id: id,

@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Patient.init(
     {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -36,7 +41,6 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
         validate: {
           notEmpty: {
             msg: 'Email não pode ser vazio',
@@ -44,11 +48,18 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: {
             msg: 'Email inválido',
           },
-          async isUnique(email) {
-            const user = await Patient.findOne({ where: { email } });
-            if (user) {
-              throw new Error('Email já cadastrado');
-            }
+          isUniqueEmail(value, next) {
+            Patient.findOne({
+              where: { email: value },
+              // verify if its not itself
+            }).then((patient) => {
+              console.log(patient);
+              console.log(this);
+              if (patient && patient.id !== this.id) {
+                return next('Email já cadastrado');
+              }
+              return next();
+            });
           },
         },
       },
