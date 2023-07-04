@@ -6,5 +6,5 @@ node_modules
 .env.local
 .env.staging
 
-.package-lock.json
+package-lock.json
 ```

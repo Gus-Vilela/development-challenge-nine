@@ -32,13 +32,11 @@ export default function PatientForm(props) {
     axios
       .put(`http://localhost:3001/Patient/${id}`, data)
       .then((response) => {
-        console.log(response.data);
         setOpenPopup(false);
         setOpenSnackbar(true);
         setSuccessMessage(response.data.msg);
       })
       .catch((error) => {
-        console.log(error.response.data);
         if (error.response.data.msg === 'Email já cadastrado') {
           setError('email', {
             type: 'manual',
@@ -55,13 +53,11 @@ export default function PatientForm(props) {
     axios
       .post('http://localhost:3001/Patient', data)
       .then((response) => {
-        console.log(response.data);
         setOpenPopup(false);
         setOpenSnackbar(true);
         setSuccessMessage(response.data.msg);
       })
       .catch((error) => {
-        console.log(error.response.data);
         if (error.response.data.msg === 'Email já cadastrado') {
           setError('email', {
             type: 'manual',

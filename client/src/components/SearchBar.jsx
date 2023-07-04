@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { TextField, Box, Paper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 

@@ -25,6 +25,7 @@ import PatientForm from './PatientForm';
 import SnackbarAlert from './SnackbarAlert';
 import Confirmation from './Confirmation';
 import SearchBar from './SearchBar';
+import format from 'date-fns/format';
 
 export default function PatientTable(props) {
   const [rawPatients, setRawPatients] = useState([]);
@@ -43,12 +44,10 @@ export default function PatientTable(props) {
     axios
       .get('http://localhost:3001/Patient')
       .then((response) => {
-        console.log(response.data);
         setRawPatients(response.data);
         setPatients(response.data);
       })
       .catch((error) => {
-        console.log(error.message);
         setErrorMessage(error.message);
         setOpenSnackbar(true);
       });
@@ -71,25 +70,14 @@ export default function PatientTable(props) {
     axios
       .delete(`http://localhost:3001/Patient/${id}`)
       .then((response) => {
-        console.log(response);
         setPatients(patients.filter((curPatient) => curPatient.id !== id));
         setOpenSnackbar(true);
         setSuccessMessage(response.data.msg);
       })
       .catch((error) => {
-        console.log(error);
         setErrorMessage(error.response.data.msg);
         setOpenSnackbar(true);
       });
-  };
-
-  // takes Patient.birthDate and returns it in the format DD/MM/YYYY
-  const formatDate = (date) => {
-    const dateArray = date.split('-');
-    const day = dateArray[2];
-    const month = dateArray[1];
-    const year = dateArray[0];
-    return `${day}/${month}/${year}`;
   };
 
   // emptyRows is used to fill the table with empty rows
@@ -181,7 +169,9 @@ export default function PatientTable(props) {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>{patient.name}</TableCell>
-                  <TableCell>{formatDate(patient.birthDate)}</TableCell>
+                  <TableCell>
+                    {format(new Date(patient.birthDate), 'dd/MM/yyyy')}
+                  </TableCell>
                   <TableCell>{patient.email}</TableCell>
                   <TableCell>{patient.address}</TableCell>
                   <TableCell>
