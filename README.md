@@ -1,6 +1,6 @@
-# Code Challenge Solution
+# Medcloud Code Challenge Solution
 
-This repository contains a solution to a code challenge. Follow the instructions below to run the project.
+This repository contains a solution to the code challenge. The requirements provided by Medcloud can be found at the [end](#development-challenge). Follow the instructions below to run the project.
 
 ## Prerequisites
 - [Node.js](https://nodejs.org) installed on your machine.
@@ -10,7 +10,7 @@ This repository contains a solution to a code challenge. Follow the instructions
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Gus-Vilela/development-challenge-nine
+   $ git clone https://github.com/Gus-Vilela/development-challenge-nine
    ```
 
 2. Configure the Node.js API:
@@ -35,19 +35,36 @@ This repository contains a solution to a code challenge. Follow the instructions
 
    2. Run Docker Compose to set up the required containers:
       ```bash
-      docker-compose up -d
+      $ docker-compose up -d
       ```
 
    3. Enter the running container using Docker Exec:
       ```bash
-      docker exec -it server-app sh
+      $ docker exec -it server-app sh
       ```
 
    4. Run the database migrations using the Sequelize CLI:
       ```bash
-      npx sequelize-cli db:migrate
+      $ npx sequelize-cli db:migrate
       ```
 
+   Once the migrations are complete, the API will be ready and running at `http://127.0.0.1:3001/Patient`.
+
+3. Configure the client side:
+   1. Enter the `client` folder:
+      ```bash
+      $ cd client
+      ```
+
+    2. Install the required dependencies:
+       ```bash
+       $ npm install
+       ```
+
+    3. Start the client application in development mode:
+       ```bash
+       $ npm run dev
+       ```
 # Development challenge
 
 ![logo medcloud-03 white copy](https://user-images.githubusercontent.com/46347123/158176045-de9fefb0-35e2-4515-83ff-c132608aa870.png)
