@@ -40,7 +40,7 @@ This repository contains a solution to the code challenge. The requirements prov
 
    3. Enter the running container using Docker Exec:
       ```bash
-      $ docker exec -it server-app sh
+      $ docker exec -it medcloudChallenge-api sh
       ```
 
    4. Run the database migrations using the Sequelize CLI:
