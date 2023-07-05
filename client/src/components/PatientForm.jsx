@@ -86,6 +86,10 @@ export default function PatientForm(props) {
           variant="filled"
           {...register('name', {
             required: "Campo 'Nome' é obrigatório",
+            maxLength: {
+              value: 100,
+              message: 'Nome deve conter no máximo 100 caracteres',
+            },
             pattern: {
               value: /^[A-Za-zÀ-ÖØ-öø-ÿ ]+$/,
               message: 'Nome deve conter apenas letras e espaços',
@@ -132,6 +136,10 @@ export default function PatientForm(props) {
           type="email"
           {...register('email', {
             required: "Campo 'Email' é obrigatório",
+            maxLength: {
+              value: 100,
+              message: 'Email deve conter no máximo 100 caracteres',
+            },
             validate: {
               // verify if the email is valid
               isEmail: (value) => {
@@ -156,6 +164,10 @@ export default function PatientForm(props) {
           variant="filled"
           {...register('address', {
             required: "Campo 'Endereço' é obrigatório",
+            maxLength: {
+              value: 255,
+              message: 'Endereço deve conter no máximo 255 caracteres',
+            },
           })}
           sx={{
             bgcolor: 'secondary.main',

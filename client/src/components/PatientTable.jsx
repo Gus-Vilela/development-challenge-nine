@@ -14,7 +14,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -52,10 +52,14 @@ export default function PatientTable() {
         setOpenSnackbar(true);
       });
   }, [openSnackbar]);
+
   // handleChangePage is used to change the page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    const tableContainer = document.querySelector('.MuiTableContainer-root');
+    tableContainer.scrollTo(0, 0);
   };
+
   // handleChangeRowsPerPage is used to change the number of rows per page
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -75,6 +79,10 @@ export default function PatientTable() {
         setOpenSnackbar(true);
       });
   };
+
+  // add empty rows to complete 5 rows per page
+  const emptyRows =
+    5 - Math.min(rowsPerPage, patients.length - page * rowsPerPage);
 
   return (
     <>
@@ -150,8 +158,8 @@ export default function PatientTable() {
                 <TableCell>data de nascimento</TableCell>
                 <TableCell>email</TableCell>
                 <TableCell>endereco</TableCell>
-                <TableCell align="center">excluir</TableCell>
                 <TableCell align="center">editar</TableCell>
+                <TableCell align="center">excluir</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -172,6 +180,17 @@ export default function PatientTable() {
                     <TableCell>{patient.address}</TableCell>
                     <TableCell align="center">
                       <IconButton
+                        aria-label="edit"
+                        onClick={() => {
+                          setDefaultValues(patient);
+                          setOpenFormPopup(true);
+                        }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton
                         aria-label="delete"
                         sx={{
                           '&:hover': {
@@ -184,22 +203,16 @@ export default function PatientTable() {
                           setOpenConfPopup(true);
                         }}
                       >
-                        <PersonRemoveIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() => {
-                          setDefaultValues(patient);
-                          setOpenFormPopup(true);
-                        }}
-                      >
-                        <EditIcon />
+                        <DeleteIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 72.5 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
