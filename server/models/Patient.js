@@ -1,8 +1,7 @@
-'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Patient extends Model {
-    static associate(models) {
+    static associate() {
       // define association here
     }
   }
@@ -20,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: {
             msg: 'Nome não pode ser vazio',
+          },
+          len: {
+            args: [1, 100],
+            msg: 'Nome deve ter no máximo 100 caracteres',
           },
           noSpecialChars(value) {
             // Check if the name contains any non-alphabetic characters
@@ -68,6 +71,10 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: {
             msg: 'Email inválido',
           },
+          len: {
+            args: [1, 100],
+            msg: 'Email deve ter no máximo 100 caracteres',
+          },
           async isUniqueEmail(value) {
             // changed to async function
             const patient = await Patient.findOne({
@@ -94,6 +101,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: {
             msg: 'Endereço não pode ser vazio',
+          },
+          len: {
+            args: [1, 128],
+            msg: 'Endereço deve ter no máximo 128 caracteres',
           },
           async sanitizeSpecialChars(value) {
             // Replace any sequence of two or more special characters with a single

@@ -1,15 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const PatientController = require('../controllers/PatientController');
+const {
+  destroy,
+  show,
+  showAll,
+  store,
+  update,
+} = require('../controllers/Patient/index');
 
-router.get('/', PatientController.showAll);
+router.post('/', store);
 
-router.post('/', PatientController.store);
+router.get('/', showAll);
 
-router.get('/:id', PatientController.show);
+router.get('/:id', show);
 
-router.put('/:id', PatientController.update);
+router.put('/:id', update);
 
-router.delete('/:id', PatientController.destroy);
+router.delete('/:id', destroy);
 
 module.exports = router;

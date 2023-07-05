@@ -9,6 +9,9 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    "import/newline-after-import": "off"
+    "import/newline-after-import": "off",
+    "import/no-extraneous-dependencies": "off",
+    "global-require": "off",
+    "no-console": "off"
   }
 }

@@ -1,10 +1,8 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { Button, Stack, TextField } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
-import axios from 'axios';
 import { isEmail, isAfter } from 'validator';
+import { createPatient, editPatient } from '../api/services/Patient';
 
 export default function PatientForm(props) {
   const { defaultValues, setOpenPopup, setSuccessMessage, setErrorMessage } =
@@ -27,46 +25,42 @@ export default function PatientForm(props) {
     handleSetValues(defaultValues);
   }, [defaultValues]);
 
-  const handeEdit = (data) => {
-    axios
-      .put(`http://localhost:3001/Patient/${id}`, data)
-      .then((response) => {
-        setOpenPopup(false);
-        setSuccessMessage(response.data.msg);
+  const handleAdd = async (data) => {
+    try {
+      const response = await createPatient(data);
+      setOpenPopup(false);
+      setSuccessMessage(response.data.msg);
+      setOpenSnackbar(true);
+    } catch (error) {
+      if (error.response.data.msg === 'Email já cadastrado') {
+        setError('email', {
+          type: 'manual',
+          message: 'Email já cadastrado',
+        });
+      } else {
+        setErrorMessage(error.response.data.msg);
         setOpenSnackbar(true);
-      })
-      .catch((error) => {
-        if (error.response.data.msg === 'Email já cadastrado') {
-          setError('email', {
-            type: 'manual',
-            message: 'Email já cadastrado',
-          });
-        } else {
-          setErrorMessage(error.response.data.msg);
-          setOpenSnackbar(true);
-        }
-      });
+      }
+    }
   };
 
-  const handleAdd = (data) => {
-    axios
-      .post('http://localhost:3001/Patient', data)
-      .then((response) => {
-        setOpenPopup(false);
-        setSuccessMessage(response.data.msg);
+  const handeEdit = async (data) => {
+    try {
+      const response = await editPatient(id, data);
+      setOpenPopup(false);
+      setSuccessMessage(response.data.msg);
+      setOpenSnackbar(true);
+    } catch (error) {
+      if (error.response.data.msg === 'Email já cadastrado') {
+        setError('email', {
+          type: 'manual',
+          message: 'Email já cadastrado',
+        });
+      } else {
+        setErrorMessage(error.response.data.msg);
         setOpenSnackbar(true);
-      })
-      .catch((error) => {
-        if (error.response.data.msg === 'Email já cadastrado') {
-          setError('email', {
-            type: 'manual',
-            message: 'Email já cadastrado',
-          });
-        } else {
-          setErrorMessage(error.response.data.msg);
-          setOpenSnackbar(true);
-        }
-      });
+      }
+    }
   };
 
   // onSubmit is used to add or edit a patient
@@ -165,8 +159,8 @@ export default function PatientForm(props) {
           {...register('address', {
             required: "Campo 'Endereço' é obrigatório",
             maxLength: {
-              value: 255,
-              message: 'Endereço deve conter no máximo 255 caracteres',
+              value: 128,
+              message: 'Endereço deve conter no máximo 128 caracteres',
             },
           })}
           sx={{

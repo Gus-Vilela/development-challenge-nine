@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import {
   TableContainer,
   Table,
@@ -21,6 +20,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import format from 'date-fns/format';
+import { deletePatient, getAllPatients } from '../api/services/Patient';
 import Popup from './Popup';
 import PatientForm from './PatientForm';
 import SnackbarAlert from './SnackbarAlert';
@@ -41,8 +41,7 @@ export default function PatientTable() {
 
   // useEffect is used to get the data from the database
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/Patient')
+    getAllPatients()
       .then((response) => {
         setRawPatients(response.data);
         setPatients(response.data);
@@ -66,18 +65,16 @@ export default function PatientTable() {
     setPage(0);
   };
 
-  const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:3001/Patient/${id}`)
-      .then((response) => {
-        setPatients(patients.filter((curPatient) => curPatient.id !== id));
-        setSuccessMessage(response.data.msg);
-        setOpenSnackbar(true);
-      })
-      .catch((error) => {
-        setErrorMessage(error.response.data.msg);
-        setOpenSnackbar(true);
-      });
+  const handleDelete = async (id) => {
+    try {
+      const response = await deletePatient;
+      setPatients(patients.filter((curPatient) => curPatient.id !== id));
+      setSuccessMessage(response.data.msg);
+      setOpenSnackbar(true);
+    } catch (error) {
+      setErrorMessage(error.response.data.msg);
+      setOpenSnackbar(true);
+    }
   };
 
   // add empty rows to complete 5 rows per page

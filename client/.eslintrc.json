@@ -54,6 +54,7 @@
     "no-unused-vars": "off",
     "no-shadow": ["error", { "allow": ["count", "state"] }],
     "import/no-extraneous-dependencies": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }

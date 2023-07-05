@@ -1,8 +1,6 @@
-'use strict';
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     // adicionar a restrição de unicidade no campo email
     await queryInterface.addConstraint('Patients', {
       fields: ['email'],
@@ -10,7 +8,7 @@ module.exports = {
       name: 'unique_email',
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     // remover a restrição de unicidade no campo email
     await queryInterface.removeConstraint('Patients', 'unique_email');
   },
