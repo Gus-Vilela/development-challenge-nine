@@ -9,8 +9,13 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 
-export default function Popup(props) {
-  const { openPopup, setOpenPopup, children, title, icon } = props;
+export default function Popup({
+  openPopup,
+  setOpenPopup,
+  children,
+  title,
+  icon,
+}) {
   return (
     <Dialog
       open={openPopup}

@@ -4,16 +4,18 @@ import { useForm } from 'react-hook-form';
 import { isEmail, isAfter } from 'validator';
 import { createPatient, editPatient } from '../api/services/Patient';
 
-export default function PatientForm(props) {
-  const { defaultValues, setOpenPopup, setSuccessMessage, setErrorMessage } =
-    props;
-  const { id } = defaultValues;
-  const { setOpenSnackbar } = props;
+export default function PatientForm({
+  defaultValues,
+  setOpenPopup,
+  setSuccessMessage,
+  setErrorMessage,
+  setOpenSnackbar,
+}) {
   const { register, handleSubmit, setError, formState, setValue } = useForm({});
   const { errors } = formState;
-
+  const { id } = defaultValues;
   // set values to the form
-  const handleSetValues = (data) => {
+  const handleFormSetValues = (data) => {
     setValue('name', data.name);
     setValue('birthDate', data.birthDate);
     setValue('email', data.email);
@@ -22,25 +24,33 @@ export default function PatientForm(props) {
 
   // useEffect is used to set the values to the form
   useEffect(() => {
-    handleSetValues(defaultValues);
+    handleFormSetValues(defaultValues);
   }, [defaultValues]);
+
+  const handleErrorMessage = (error) => {
+    if (error.response.data.msg === 'Email já cadastrado') {
+      setError('email', {
+        type: 'manual',
+        message: 'Email já cadastrado',
+      });
+    } else {
+      setErrorMessage(error.response.data.msg);
+      setOpenSnackbar(true);
+    }
+  };
+
+  const handleSuceessMessage = (response) => {
+    setSuccessMessage(response.data.msg);
+    setOpenSnackbar(true);
+  };
 
   const handleAdd = async (data) => {
     try {
       const response = await createPatient(data);
       setOpenPopup(false);
-      setSuccessMessage(response.data.msg);
-      setOpenSnackbar(true);
+      handleSuceessMessage(response);
     } catch (error) {
-      if (error.response.data.msg === 'Email já cadastrado') {
-        setError('email', {
-          type: 'manual',
-          message: 'Email já cadastrado',
-        });
-      } else {
-        setErrorMessage(error.response.data.msg);
-        setOpenSnackbar(true);
-      }
+      handleErrorMessage(error);
     }
   };
 
@@ -48,18 +58,9 @@ export default function PatientForm(props) {
     try {
       const response = await editPatient(id, data);
       setOpenPopup(false);
-      setSuccessMessage(response.data.msg);
-      setOpenSnackbar(true);
+      handleSuceessMessage(response);
     } catch (error) {
-      if (error.response.data.msg === 'Email já cadastrado') {
-        setError('email', {
-          type: 'manual',
-          message: 'Email já cadastrado',
-        });
-      } else {
-        setErrorMessage(error.response.data.msg);
-        setOpenSnackbar(true);
-      }
+      handleErrorMessage(error);
     }
   };
 

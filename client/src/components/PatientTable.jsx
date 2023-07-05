@@ -47,7 +47,7 @@ export default function PatientTable() {
         setPatients(response.data);
       })
       .catch((error) => {
-        setErrorMessage(error.message);
+        setErrorMessage(error.message.data.msg);
         setOpenSnackbar(true);
       });
   }, [openSnackbar]);

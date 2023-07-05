@@ -5,9 +5,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function Confirmation(props) {
-  const { setOpenPopup, handleDelete, defaultValues } = props;
-
+export default function Confirmation({
+  setOpenPopup,
+  handleDelete,
+  defaultValues,
+}) {
   return (
     <>
       <DialogTitle id="responsive-dialog-title">
