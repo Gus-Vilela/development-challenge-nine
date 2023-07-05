@@ -7,17 +7,20 @@ import Alert from '@mui/material/Alert';
 //   <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 // ));
 
-export default function SnackbarAlert(props) {
-  const { openSnackbar, setOpenSnackbar, successMessage, errorMessage } = props;
-
+export default function SnackbarAlert({
+  openSnackbar,
+  setOpenSnackbar,
+  successMessage,
+  errorMessage,
+  setErrorMessage,
+}) {
   // handleClose is used to close the snackbar
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     setOpenSnackbar(false);
-    successMessage('');
-    errorMessage('');
+    setErrorMessage('');
   };
 
   return (

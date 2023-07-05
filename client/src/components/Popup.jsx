@@ -20,8 +20,6 @@ export default function Popup(props) {
       maxWidth="md"
       sx={{
         '& .MuiDialog-paper': {
-          position: 'absolute',
-          top: 10,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

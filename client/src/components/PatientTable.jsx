@@ -27,7 +27,7 @@ import SnackbarAlert from './SnackbarAlert';
 import Confirmation from './Confirmation';
 import SearchBar from './SearchBar';
 
-export default function PatientTable(props) {
+export default function PatientTable() {
   const [rawPatients, setRawPatients] = useState([]);
   const [patients, setPatients] = useState([]);
   const [page, setPage] = useState(0);
@@ -61,10 +61,6 @@ export default function PatientTable(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  // set default values to the form
-  const handeDefaultValues = (data) => {
-    setDefaultValues(data);
-  };
 
   const handleDelete = (id) => {
     axios
@@ -79,10 +75,6 @@ export default function PatientTable(props) {
         setOpenSnackbar(true);
       });
   };
-
-  // emptyRows is used to fill the table with empty rows
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, patients.length - page * rowsPerPage);
 
   return (
     <>
@@ -119,7 +111,7 @@ export default function PatientTable(props) {
             textTransform: 'capitalize',
           }}
           onClick={() => {
-            handeDefaultValues({
+            setDefaultValues({
               id: '',
               name: '',
               birthDate: '',
@@ -133,84 +125,84 @@ export default function PatientTable(props) {
         </Button>
       </Stack>
       <SearchBar rawPatients={rawPatients} setPatients={setPatients} />
-      <TableContainer
-        component={Paper}
-        sx={{
-          borderStartStartRadius: 0,
-          borderStartEndRadius: 0,
-        }}
-      >
-        <Table arial-label="Tabela Pacientes">
-          <TableHead
-            sx={{
-              textTransform: 'uppercase',
-              '& .MuiTableCell-head': {
-                fontWeight: '500',
-                color: '#707070',
-                letterSpacing: 1,
-              },
-            }}
-          >
-            <TableRow>
-              <TableCell>nome</TableCell>
-              <TableCell>data de nascimento</TableCell>
-              <TableCell>email</TableCell>
-              <TableCell>endereco</TableCell>
-              <TableCell>excluir</TableCell>
-              <TableCell>editar</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {patients
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((patient) => (
-                <TableRow
-                  key={patient.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell>{patient.name}</TableCell>
-                  <TableCell>
-                    {format(new Date(patient.birthDate), 'dd/MM/yyyy')}
-                  </TableCell>
-                  <TableCell>{patient.email}</TableCell>
-                  <TableCell>{patient.address}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      aria-label="delete"
-                      sx={{
-                        '&:hover': {
-                          backgroundColor: '#e57373',
-                          color: '#fff',
-                        },
-                      }}
-                      onClick={() => {
-                        handeDefaultValues(patient);
-                        setOpenConfPopup(true);
-                      }}
-                    >
-                      <PersonRemoveIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>
-                    <IconButton
-                      aria-label="edit"
-                      onClick={() => {
-                        handeDefaultValues(patient);
-                        setOpenFormPopup(true);
-                      }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 72.5 * emptyRows }}>
-                <TableCell colSpan={6} />
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer
+          sx={{
+            borderStartStartRadius: 0,
+            borderStartEndRadius: 0,
+            maxHeight: 420,
+            boxSizing: 'border-box',
+          }}
+        >
+          <Table stickyHeader arial-label="Tabela Pacientes">
+            <TableHead
+              sx={{
+                textTransform: 'uppercase',
+                '& .MuiTableCell-head': {
+                  fontWeight: '500',
+                  color: '#707070',
+                  letterSpacing: 1,
+                },
+              }}
+            >
+              <TableRow>
+                <TableCell>nome</TableCell>
+                <TableCell>data de nascimento</TableCell>
+                <TableCell>email</TableCell>
+                <TableCell>endereco</TableCell>
+                <TableCell align="center">excluir</TableCell>
+                <TableCell align="center">editar</TableCell>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {patients
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((patient) => (
+                  <TableRow
+                    key={patient.id}
+                    sx={{
+                      '&:last-child td, &:last-child th': { border: 0 },
+                    }}
+                  >
+                    <TableCell>{patient.name}</TableCell>
+                    <TableCell>
+                      {format(new Date(patient.birthDate), 'dd/MM/yyyy')}
+                    </TableCell>
+                    <TableCell>{patient.email}</TableCell>
+                    <TableCell>{patient.address}</TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        aria-label="delete"
+                        sx={{
+                          '&:hover': {
+                            backgroundColor: '#e57373',
+                            color: '#fff',
+                          },
+                        }}
+                        onClick={() => {
+                          setDefaultValues(patient);
+                          setOpenConfPopup(true);
+                        }}
+                      >
+                        <PersonRemoveIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => {
+                          setDefaultValues(patient);
+                          setOpenFormPopup(true);
+                        }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10]}
           component="div"
@@ -225,7 +217,7 @@ export default function PatientTable(props) {
             },
           }}
         />
-      </TableContainer>
+      </Paper>
       <Popup
         openPopup={openFormPopup}
         setOpenPopup={setOpenFormPopup}
@@ -274,6 +266,7 @@ export default function PatientTable(props) {
         setOpenSnackbar={setOpenSnackbar}
         successMessage={successMessage}
         errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
       />
     </>
   );
