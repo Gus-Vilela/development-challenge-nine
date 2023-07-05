@@ -53,6 +53,7 @@
     "no-param-reassign": "off",
     "no-unused-vars": "off",
     "no-shadow": ["error", { "allow": ["count", "state"] }],
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off"
   }
 }

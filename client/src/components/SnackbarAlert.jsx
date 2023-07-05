@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import Alert from '@mui/material/Alert';
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+// const Alert = React.forwardRef((props, ref) => (
+//   <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+// ));
 
 export default function SnackbarAlert(props) {
   const { openSnackbar, setOpenSnackbar, successMessage, errorMessage } = props;
@@ -16,10 +16,12 @@ export default function SnackbarAlert(props) {
       return;
     }
     setOpenSnackbar(false);
+    successMessage('');
+    errorMessage('');
   };
 
   return (
-    <Stack spacing={2} sx={{ width: '100%' }}>
+    <Stack>
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
@@ -27,8 +29,9 @@ export default function SnackbarAlert(props) {
       >
         <Alert
           onClose={handleClose}
+          elevation={6}
+          variant="filled"
           severity={!errorMessage ? 'success' : 'error'}
-          sx={{ width: '100%' }}
         >
           {!errorMessage ? successMessage : errorMessage}
         </Alert>

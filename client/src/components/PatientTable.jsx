@@ -20,12 +20,12 @@ import AddIcon from '@mui/icons-material/Add';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import format from 'date-fns/format';
 import Popup from './Popup';
 import PatientForm from './PatientForm';
 import SnackbarAlert from './SnackbarAlert';
 import Confirmation from './Confirmation';
 import SearchBar from './SearchBar';
-import format from 'date-fns/format';
 
 export default function PatientTable(props) {
   const [rawPatients, setRawPatients] = useState([]);
@@ -71,8 +71,8 @@ export default function PatientTable(props) {
       .delete(`http://localhost:3001/Patient/${id}`)
       .then((response) => {
         setPatients(patients.filter((curPatient) => curPatient.id !== id));
-        setOpenSnackbar(true);
         setSuccessMessage(response.data.msg);
+        setOpenSnackbar(true);
       })
       .catch((error) => {
         setErrorMessage(error.response.data.msg);
