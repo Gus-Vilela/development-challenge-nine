@@ -1,6 +1,4 @@
 import {
-  TableContainer,
-  Table,
   TableHead,
   TableRow,
   TableCell,
@@ -10,6 +8,12 @@ import {
 import { format } from 'date-fns';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import {
+  StyledIconButton,
+  StyledTable,
+  StyledTableContainer,
+  StyledTableRow,
+} from './Styles';
 
 export default function TableMain({
   patients,
@@ -21,23 +25,9 @@ export default function TableMain({
   setOpenConfPopup,
 }) {
   return (
-    <TableContainer
-      sx={{
-        maxHeight: 432,
-        boxSizing: 'border-box',
-      }}
-    >
-      <Table stickyHeader arial-label="Tabela Pacientes">
-        <TableHead
-          sx={{
-            textTransform: 'uppercase',
-            '& .MuiTableCell-head': {
-              fontWeight: '500',
-              color: '#707070',
-              letterSpacing: 1,
-            },
-          }}
-        >
+    <StyledTableContainer>
+      <StyledTable stickyHeader arial-label="Tabela Pacientes">
+        <TableHead>
           <TableRow>
             <TableCell>nome</TableCell>
             <TableCell>data de nascimento</TableCell>
@@ -51,12 +41,7 @@ export default function TableMain({
           {patients
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((patient) => (
-              <TableRow
-                key={patient.id}
-                sx={{
-                  '&:last-child td, &:last-child th': { border: 0 },
-                }}
-              >
+              <StyledTableRow key={patient.id}>
                 <TableCell>{patient.name}</TableCell>
                 <TableCell>
                   {format(new Date(patient.birthDate), 'dd/MM/yyyy')}
@@ -75,23 +60,17 @@ export default function TableMain({
                   </IconButton>
                 </TableCell>
                 <TableCell align="center">
-                  <IconButton
+                  <StyledIconButton
                     aria-label="delete"
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: '#e57373',
-                        color: '#fff',
-                      },
-                    }}
                     onClick={() => {
                       setDefaultValues(patient);
                       setOpenConfPopup(true);
                     }}
                   >
                     <DeleteIcon />
-                  </IconButton>
+                  </StyledIconButton>
                 </TableCell>
-              </TableRow>
+              </StyledTableRow>
             ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 74.2 * emptyRows }}>
@@ -99,7 +78,7 @@ export default function TableMain({
             </TableRow>
           )}
         </TableBody>
-      </Table>
-    </TableContainer>
+      </StyledTable>
+    </StyledTableContainer>
   );
 }

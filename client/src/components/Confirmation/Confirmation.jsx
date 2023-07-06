@@ -4,6 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { StyledButton } from './Styles';
 
 export default function Confirmation({
   setOpenPopup,
@@ -28,20 +29,15 @@ export default function Confirmation({
         >
           Cancelar
         </Button>
-        <Button
+        <StyledButton
           onClick={() => {
             handleDelete(defaultValues.id);
             setOpenPopup(false);
           }}
           autoFocus
-          sx={{
-            '&:hover': {
-              color: '#d32f2f',
-            },
-          }}
         >
           {action}
-        </Button>
+        </StyledButton>
       </DialogActions>
     </>
   );

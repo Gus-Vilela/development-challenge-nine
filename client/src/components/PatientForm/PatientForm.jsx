@@ -1,8 +1,9 @@
-import { Button, Stack, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { isEmail, isAfter } from 'validator';
-import { createPatient, editPatient } from '../api/services/Patient';
+import { createPatient, editPatient } from '../../api/services/Patient';
+import { StyledStack, StyledTextField } from './styles';
 
 export default function PatientForm({
   defaultValues,
@@ -68,8 +69,8 @@ export default function PatientForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Stack spacing={2} width={400}>
-        <TextField
+      <StyledStack spacing={3}>
+        <StyledTextField
           label="Nome do Paciente"
           variant="filled"
           {...register('name', {
@@ -83,17 +84,13 @@ export default function PatientForm({
               message: 'Nome deve conter apenas letras e espaços',
             },
           })}
-          sx={{
-            bgcolor: 'secondary.main',
-            marginTop: '2rem',
-          }}
           InputLabelProps={{
             shrink: true,
           }}
           error={!!errors.name}
           helperText={errors.name?.message}
         />
-        <TextField
+        <StyledTextField
           label="Data de Nascimento"
           type="date"
           variant="filled"
@@ -109,16 +106,13 @@ export default function PatientForm({
               },
             },
           })}
-          sx={{
-            bgcolor: 'secondary.main',
-          }}
           InputLabelProps={{
             shrink: true,
           }}
           error={!!errors.birthDate}
           helperText={errors.birthDate?.message}
         />
-        <TextField
+        <StyledTextField
           label="Email"
           variant="filled"
           type="email"
@@ -138,16 +132,13 @@ export default function PatientForm({
               },
             },
           })}
-          sx={{
-            bgcolor: 'secondary.main',
-          }}
           InputLabelProps={{
             shrink: true,
           }}
           error={!!errors.email}
           helperText={errors.email?.message}
         />
-        <TextField
+        <StyledTextField
           label="Endereço"
           variant="filled"
           {...register('address', {
@@ -157,9 +148,6 @@ export default function PatientForm({
               message: 'Endereço deve conter no máximo 128 caracteres',
             },
           })}
-          sx={{
-            bgcolor: 'secondary.main',
-          }}
           InputLabelProps={{
             shrink: true,
           }}
@@ -169,7 +157,7 @@ export default function PatientForm({
         <Button type="submit" variant="contained">
           Enviar
         </Button>
-      </Stack>
+      </StyledStack>
     </form>
   );
 }

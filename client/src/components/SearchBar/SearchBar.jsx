@@ -1,5 +1,4 @@
-import { TextField, Box, Paper } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { StyledBox, StyledSearchIcon, StyledTextField } from './Styles';
 
 export default function SearchBar({ rawPatients, setPatients, searchLabel }) {
   const handleSearchTextChange = (e) => {
@@ -15,32 +14,15 @@ export default function SearchBar({ rawPatients, setPatients, searchLabel }) {
   };
 
   return (
-    <Box
-      sx={{
-        borderRadius: 0,
-        width: '100%',
-        padding: '1rem 2rem',
-        boxSizing: 'border-box',
-      }}
-    >
-      <TextField
-        sx={{
-          width: '100%',
-          boxSizing: 'border-box',
-        }}
+    <StyledBox>
+      <StyledTextField
         label={searchLabel}
         variant="outlined"
         onChange={handleSearchTextChange}
         InputProps={{
-          endAdornment: (
-            <SearchIcon
-              sx={{
-                color: 'primary.main',
-              }}
-            />
-          ),
+          endAdornment: <StyledSearchIcon />,
         }}
       />
-    </Box>
+    </StyledBox>
   );
 }

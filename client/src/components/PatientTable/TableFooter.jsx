@@ -1,4 +1,4 @@
-import { TablePagination } from '@mui/material';
+import { StyledTablePagination } from './Styles';
 
 export default function TableFooter({
   page,
@@ -20,7 +20,7 @@ export default function TableFooter({
   };
 
   return (
-    <TablePagination
+    <StyledTablePagination
       rowsPerPageOptions={[5, 10]}
       component="div"
       count={patients.length}
@@ -28,11 +28,6 @@ export default function TableFooter({
       page={page}
       onPageChange={handleChangePage}
       onRowsPerPageChange={handleChangeRowsPerPage}
-      sx={{
-        '& .MuiTablePagination-caption': {
-          color: 'primary.main',
-        },
-      }}
     />
   );
 }

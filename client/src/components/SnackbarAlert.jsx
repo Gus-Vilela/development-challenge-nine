@@ -29,12 +29,17 @@ export default function SnackbarAlert({
         open={openSnackbar}
         autoHideDuration={6000}
         onClose={handleClose}
-        
+        TransitionProps={{
+          appear: false,
+        }}
       >
-        <Alert       
-          onClose={handleClose}
+        <Alert
           elevation={6}
           variant="filled"
+          onClose={handleClose}
+          TransitionProps={{
+            appear: false,
+          }}
           severity={!errorMessage ? 'success' : 'error'}
         >
           {!errorMessage ? successMessage : errorMessage}

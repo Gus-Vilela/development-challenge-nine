@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Paper } from '@mui/material';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import { deletePatient, getAllPatients } from '../api/services/Patient';
-import Popup from './Popup';
-import PatientForm from './PatientForm';
-import SnackbarAlert from './SnackbarAlert';
-import Confirmation from './Confirmation';
+import { deletePatient, getAllPatients } from '../../api/services/Patient';
+import Popup from '../Popup/Popup';
+import PatientForm from '../PatientForm/PatientForm';
+import SnackbarAlert from '../SnackbarAlert';
+import Confirmation from '../Confirmation/Confirmation';
 import TableHeader from './TableHeader';
 import TableFooter from './TableFooter';
 import TableMain from './TableMain';
+import {
+  StyledAssignmentIcon,
+  StyledPaper,
+  StyledPriorityHighIcon,
+} from './Styles';
 
 export default function PatientTable() {
   const [rawPatients, setRawPatients] = useState([]);
@@ -64,13 +66,7 @@ export default function PatientTable() {
 
   return (
     <>
-      <Paper
-        sx={{
-          width: '100%',
-          marginTop: '1rem',
-          boxSizing: 'border-box',
-        }}
-      >
+      <StyledPaper>
         <TableHeader
           rawPatients={rawPatients}
           setPatients={setPatients}
@@ -95,20 +91,12 @@ export default function PatientTable() {
           setRowsPerPage={setRowsPerPage}
           patients={patients}
         />
-      </Paper>
+      </StyledPaper>
       <Popup
         openPopup={openFormPopup}
         setOpenPopup={setOpenFormPopup}
         title="Formulário do Paciente"
-        icon={
-          <AssignmentIcon
-            sx={{
-              mr: 1,
-              color: 'primary.main',
-              margin: '0 1rem 0 0.5rem',
-            }}
-          />
-        }
+        icon={<StyledAssignmentIcon />}
       >
         <PatientForm
           defaultValues={defaultValues}
@@ -122,15 +110,7 @@ export default function PatientTable() {
         openPopup={openConfPopup}
         setOpenPopup={setOpenConfPopup}
         title="Confirmação"
-        icon={
-          <PriorityHighIcon
-            sx={{
-              mr: 1,
-              color: 'error.main',
-              margin: '0 1rem 0 0.5rem',
-            }}
-          />
-        }
+        icon={<StyledPriorityHighIcon />}
       >
         <Confirmation
           defaultValues={defaultValues}
