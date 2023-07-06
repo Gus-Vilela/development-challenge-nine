@@ -1,6 +1,7 @@
 import './App.css';
-import { Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import PatientTable from './components/PatientTable';
+import img from './assets/medcloud.svg';
 
 function App() {
   return (
@@ -11,13 +12,7 @@ function App() {
         alignItems: 'center',
       }}
     >
-      <Typography
-        variant="h2"
-        color="tertiary.main"
-        textAlign={{ textAlign: 'center' }}
-      >
-        medcloud
-      </Typography>
+      <img src={img} alt="medcloud logo" className="logo" />
       <PatientTable />
     </Container>
   );

@@ -135,7 +135,7 @@ export default function PatientTable() {
           sx={{
             borderStartStartRadius: 0,
             borderStartEndRadius: 0,
-            maxHeight: 420,
+            maxHeight: 430,
             boxSizing: 'border-box',
           }}
         >
@@ -206,7 +206,7 @@ export default function PatientTable() {
                   </TableRow>
                 ))}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 72.5 * emptyRows }}>
+                <TableRow style={{ height: 74.2 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
