@@ -19,6 +19,9 @@ export default function TableFooter({
     setPage(0);
   };
 
+  const labelDisplayedRows = ({ from, to, count }) =>
+    `${from}-${to} de ${count}`;
+
   return (
     <StyledTablePagination
       rowsPerPageOptions={[5, 10]}
@@ -28,6 +31,8 @@ export default function TableFooter({
       page={page}
       onPageChange={handleChangePage}
       onRowsPerPageChange={handleChangeRowsPerPage}
+      labelRowsPerPage="Pacientes por página"
+      labelDisplayedRows={labelDisplayedRows}
     />
   );
 }
