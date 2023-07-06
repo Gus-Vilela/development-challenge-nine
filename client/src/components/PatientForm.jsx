@@ -7,9 +7,8 @@ import { createPatient, editPatient } from '../api/services/Patient';
 export default function PatientForm({
   defaultValues,
   setOpenPopup,
-  setSuccessMessage,
-  setErrorMessage,
-  setOpenSnackbar,
+  handleErrorMessage,
+  handleSuccessMessage,
 }) {
   const { register, handleSubmit, setError, formState, setValue } = useForm({});
   const { errors } = formState;
@@ -27,30 +26,24 @@ export default function PatientForm({
     handleFormSetValues(defaultValues);
   }, [defaultValues]);
 
-  const handleErrorMessage = (error) => {
+  const handleFormErrorMessage = (error) => {
     if (error.response.data.msg === 'Email já cadastrado') {
       setError('email', {
         type: 'manual',
         message: 'Email já cadastrado',
       });
     } else {
-      setErrorMessage(error.response.data.msg);
-      setOpenSnackbar(true);
+      handleErrorMessage(error);
     }
-  };
-
-  const handleSuceessMessage = (response) => {
-    setSuccessMessage(response.data.msg);
-    setOpenSnackbar(true);
   };
 
   const handleAdd = async (data) => {
     try {
       const response = await createPatient(data);
       setOpenPopup(false);
-      handleSuceessMessage(response);
+      handleSuccessMessage(response);
     } catch (error) {
-      handleErrorMessage(error);
+      handleFormErrorMessage(error);
     }
   };
 
@@ -58,9 +51,9 @@ export default function PatientForm({
     try {
       const response = await editPatient(id, data);
       setOpenPopup(false);
-      handleSuceessMessage(response);
+      handleSuccessMessage(response);
     } catch (error) {
-      handleErrorMessage(error);
+      handleFormErrorMessage(error);
     }
   };
 

@@ -9,6 +9,6 @@ export async function getAllPatients() {
 export async function deletePatient(id) {
   return client.delete(`/Patient/${id}`);
 }
-export async function editPatient(id) {
-  return client.put(`/Patient/${id}`);
+export async function editPatient(id, data) {
+  return client.put(`/Patient/${id}`, data);
 }

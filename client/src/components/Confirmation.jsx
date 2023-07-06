@@ -9,14 +9,15 @@ export default function Confirmation({
   setOpenPopup,
   handleDelete,
   defaultValues,
+  dialogTitle,
+  contentText,
+  action,
 }) {
   return (
     <>
-      <DialogTitle id="responsive-dialog-title">
-        Tem certeza que deseja excluir esse paciente?
-      </DialogTitle>
+      <DialogTitle id="responsive-dialog-title">{dialogTitle}</DialogTitle>
       <DialogContent>
-        <DialogContentText>Essa ação não pode ser desfeita.</DialogContentText>
+        <DialogContentText>{contentText}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
@@ -39,7 +40,7 @@ export default function Confirmation({
             },
           }}
         >
-          Excluir
+          {action}
         </Button>
       </DialogActions>
     </>

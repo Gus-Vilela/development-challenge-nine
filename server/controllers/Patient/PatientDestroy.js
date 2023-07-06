@@ -1,8 +1,8 @@
 const { Patient } = require('../../models/Database');
 
 module.exports = async (req, res) => {
-  const { id } = req.params;
   try {
+    const { id } = req.params;
     await Patient.destroy({
       where: {
         id,

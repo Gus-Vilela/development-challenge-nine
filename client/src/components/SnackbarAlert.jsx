@@ -29,8 +29,9 @@ export default function SnackbarAlert({
         open={openSnackbar}
         autoHideDuration={6000}
         onClose={handleClose}
+        
       >
-        <Alert
+        <Alert       
           onClose={handleClose}
           elevation={6}
           variant="filled"

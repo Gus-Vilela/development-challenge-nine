@@ -1,31 +1,15 @@
 import { useState, useEffect } from 'react';
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Paper,
-  IconButton,
-  TablePagination,
-  Button,
-  Stack,
-  Typography,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import { Paper } from '@mui/material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import format from 'date-fns/format';
 import { deletePatient, getAllPatients } from '../api/services/Patient';
 import Popup from './Popup';
 import PatientForm from './PatientForm';
 import SnackbarAlert from './SnackbarAlert';
 import Confirmation from './Confirmation';
-import SearchBar from './SearchBar';
+import TableHeader from './TableHeader';
+import TableFooter from './TableFooter';
+import TableMain from './TableMain';
 
 export default function PatientTable() {
   const [rawPatients, setRawPatients] = useState([]);
@@ -47,33 +31,30 @@ export default function PatientTable() {
         setPatients(response.data);
       })
       .catch((error) => {
-        setErrorMessage(error.message.data.msg);
+        error.message === 'Network Error'
+          ? setErrorMessage('Erro de conexão')
+          : setErrorMessage(error.message);
         setOpenSnackbar(true);
       });
   }, [openSnackbar]);
 
-  // handleChangePage is used to change the page
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    const tableContainer = document.querySelector('.MuiTableContainer-root');
-    tableContainer.scrollTo(0, 0);
+  const handleSuccessMessage = (response) => {
+    setSuccessMessage(response.data.msg);
+    setOpenSnackbar(true);
   };
 
-  // handleChangeRowsPerPage is used to change the number of rows per page
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleErrorMessage = (error) => {
+    setErrorMessage(error.response.data.msg);
+    setOpenSnackbar(true);
   };
 
   const handleDelete = async (id) => {
     try {
-      const response = await deletePatient;
+      const response = await deletePatient(id);
       setPatients(patients.filter((curPatient) => curPatient.id !== id));
-      setSuccessMessage(response.data.msg);
-      setOpenSnackbar(true);
+      handleSuccessMessage(response);
     } catch (error) {
-      setErrorMessage(error.response.data.msg);
-      setOpenSnackbar(true);
+      handleErrorMessage(error);
     }
   };
 
@@ -83,149 +64,36 @@ export default function PatientTable() {
 
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        component={Paper}
+      <Paper
         sx={{
-          borderBottomLeftRadius: 0,
-          borderBottomRightRadius: 0,
-          marginTop: 2,
           width: '100%',
-          p: 2,
-          backgroundColor: '#f5f5f5',
+          marginTop: '1rem',
           boxSizing: 'border-box',
         }}
       >
-        <PeopleAltIcon
-          sx={{
-            mr: 1,
-            color: 'primary.main',
-            margin: '0 1rem 0 0.5rem',
-          }}
+        <TableHeader
+          rawPatients={rawPatients}
+          setPatients={setPatients}
+          setOpenFormPopup={setOpenFormPopup}
+          setDefaultValues={setDefaultValues}
+          title="Tabela de Pacientes"
+          buttonText="Adicionar Paciente"
         />
-        <Typography variant="h5" sx={{ flexGrow: 1 }} color="tertiary.main">
-          Lista de Pacientes
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          sx={{
-            textTransform: 'capitalize',
-          }}
-          onClick={() => {
-            setDefaultValues({
-              id: '',
-              name: '',
-              birthDate: '',
-              email: '',
-              address: '',
-            });
-            setOpenFormPopup(true);
-          }}
-        >
-          Novo Paciente
-        </Button>
-      </Stack>
-      <SearchBar rawPatients={rawPatients} setPatients={setPatients} />
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer
-          sx={{
-            borderStartStartRadius: 0,
-            borderStartEndRadius: 0,
-            maxHeight: 430,
-            boxSizing: 'border-box',
-          }}
-        >
-          <Table stickyHeader arial-label="Tabela Pacientes">
-            <TableHead
-              sx={{
-                textTransform: 'uppercase',
-                '& .MuiTableCell-head': {
-                  fontWeight: '500',
-                  color: '#707070',
-                  letterSpacing: 1,
-                },
-              }}
-            >
-              <TableRow>
-                <TableCell>nome</TableCell>
-                <TableCell>data de nascimento</TableCell>
-                <TableCell>email</TableCell>
-                <TableCell>endereco</TableCell>
-                <TableCell align="center">editar</TableCell>
-                <TableCell align="center">excluir</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {patients
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((patient) => (
-                  <TableRow
-                    key={patient.id}
-                    sx={{
-                      '&:last-child td, &:last-child th': { border: 0 },
-                    }}
-                  >
-                    <TableCell>{patient.name}</TableCell>
-                    <TableCell>
-                      {format(new Date(patient.birthDate), 'dd/MM/yyyy')}
-                    </TableCell>
-                    <TableCell>{patient.email}</TableCell>
-                    <TableCell>{patient.address}</TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() => {
-                          setDefaultValues(patient);
-                          setOpenFormPopup(true);
-                        }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        aria-label="delete"
-                        sx={{
-                          '&:hover': {
-                            backgroundColor: '#e57373',
-                            color: '#fff',
-                          },
-                        }}
-                        onClick={() => {
-                          setDefaultValues(patient);
-                          setOpenConfPopup(true);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 74.2 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10]}
-          component="div"
-          count={patients.length}
-          rowsPerPage={rowsPerPage}
+        <TableMain
+          patients={patients}
           page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{
-            '& .MuiTablePagination-caption': {
-              color: 'primary.main',
-            },
-          }}
+          rowsPerPage={rowsPerPage}
+          emptyRows={emptyRows}
+          setDefaultValues={setDefaultValues}
+          setOpenFormPopup={setOpenFormPopup}
+          setOpenConfPopup={setOpenConfPopup}
+        />
+        <TableFooter
+          page={page}
+          setPage={setPage}
+          rowsPerPage={rowsPerPage}
+          setRowsPerPage={setRowsPerPage}
+          patients={patients}
         />
       </Paper>
       <Popup
@@ -246,9 +114,8 @@ export default function PatientTable() {
           defaultValues={defaultValues}
           setOpenPopup={setOpenFormPopup}
           openSnackbar={openSnackbar}
-          setOpenSnackbar={setOpenSnackbar}
-          setSuccessMessage={setSuccessMessage}
-          setErrorMessage={setErrorMessage}
+          handleErrorMessage={handleErrorMessage}
+          handleSuccessMessage={handleSuccessMessage}
         />
       </Popup>
       <Popup
@@ -269,6 +136,9 @@ export default function PatientTable() {
           defaultValues={defaultValues}
           setOpenPopup={setOpenConfPopup}
           handleDelete={handleDelete}
+          dialogTitle="Tem certeza que deseja excluir esse paciente?"
+          contentText="Essa ação não pode ser desfeita."
+          action="Excluir"
         />
       </Popup>
       <SnackbarAlert

@@ -2,9 +2,9 @@ const Sequelize = require('sequelize');
 const { Patient } = require('../../models/Database');
 
 module.exports = async (req, res) => {
-  const { id } = req.params;
-  req.body.id = Number(id);
   try {
+    const { id } = req.params;
+    req.body.id = Number(id);
     await Patient.update(req.body, {
       where: {
         id,

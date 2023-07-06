@@ -1,4 +1,4 @@
-import './App.css';
+import './styles/App.css';
 import { Container } from '@mui/material';
 import PatientTable from './components/PatientTable';
 import img from './assets/medcloud.svg';

@@ -1,7 +1,7 @@
 import { TextField, Box, Paper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function SearchBar({ rawPatients, setPatients }) {
+export default function SearchBar({ rawPatients, setPatients, searchLabel }) {
   const handleSearchTextChange = (e) => {
     if (!e.target.value) {
       return setPatients(rawPatients);
@@ -16,7 +16,6 @@ export default function SearchBar({ rawPatients, setPatients }) {
 
   return (
     <Box
-      component={Paper}
       sx={{
         borderRadius: 0,
         width: '100%',
@@ -29,7 +28,7 @@ export default function SearchBar({ rawPatients, setPatients }) {
           width: '100%',
           boxSizing: 'border-box',
         }}
-        label="Pesquisar por Nome..."
+        label={searchLabel}
         variant="outlined"
         onChange={handleSearchTextChange}
         InputProps={{
