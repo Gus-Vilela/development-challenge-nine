@@ -26,7 +26,7 @@ export default function PatientForm({
   useEffect(() => {
     handleFormSetValues(defaultValues);
   }, [defaultValues]);
-
+  // handleFormErrorMessage is used to handle the error message from the form
   const handleFormErrorMessage = (error) => {
     if (error.response.data.msg === 'Email já cadastrado') {
       setError('email', {
@@ -37,7 +37,7 @@ export default function PatientForm({
       handleErrorMessage(error);
     }
   };
-
+  // handleAdd is used to add a patient
   const handleAdd = async (data) => {
     try {
       const response = await createPatient(data);
@@ -47,7 +47,7 @@ export default function PatientForm({
       handleFormErrorMessage(error);
     }
   };
-
+  // handeEdit is used to edit a patient
   const handeEdit = async (data) => {
     try {
       const response = await editPatient(id, data);

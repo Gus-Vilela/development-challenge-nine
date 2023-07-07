@@ -7,6 +7,7 @@ export default function TableFooter({
   setRowsPerPage,
   patients,
 }) {
+  // handleChangePage is used to change the page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
     const tableContainer = document.querySelector('.MuiTableContainer-root');
@@ -18,7 +19,7 @@ export default function TableFooter({
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  // labelDisplayedRows is used to change the label of the displayed rows
   const labelDisplayedRows = ({ from, to, count }) =>
     `${from}-${to} de ${count}`;
 

@@ -49,11 +49,10 @@ export default function PatientTable() {
     setErrorMessage(error.response.data.msg);
     setOpenSnackbar(true);
   };
-
+  // handleDelete is used to delete a patient
   const handleDelete = async (id) => {
     try {
       const response = await deletePatient(id);
-      setPatients(patients.filter((curPatient) => curPatient.id !== id));
       handleSuccessMessage(response);
     } catch (error) {
       handleErrorMessage(error);

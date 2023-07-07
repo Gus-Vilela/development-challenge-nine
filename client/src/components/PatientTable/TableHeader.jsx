@@ -15,6 +15,7 @@ export default function TableHeader({
   title,
   buttonText,
 }) {
+  // handleClickOpen is used to open the form popup
   const handleClickOpen = () => {
     setOpenFormPopup(true);
     setDefaultValues({});
