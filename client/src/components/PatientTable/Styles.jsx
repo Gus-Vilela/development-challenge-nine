@@ -40,10 +40,10 @@ export const StyledTablePagination = styled(TablePagination)`
 `;
 
 export const StyledStack = styled(Stack)`
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  border-top-left-radius: 0.2rem;
+  border-top-right-radius: 0.2rem;
   width: 100%;
-  padding: 1.2rem;
+  padding: 1.1rem;
   background-color: #f5f5f5;
   box-sizing: border-box;
 `;

@@ -18,3 +18,9 @@ body {
     background-size: cover;
   }
 }
+@media (max-width: 1366px) {
+  .logo {
+    width: 190px;
+    margin: 5px;
+  }
+}
